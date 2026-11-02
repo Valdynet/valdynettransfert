@@ -1,92 +1,154 @@
 
-const DEFAULT_FINANCIAL_SETTINGS = {
-  depositRate: 140,
-  withdrawRate: 130,
-  lowRate: 5,
-  highRate: 10,
-  threshold: 30,
-  minimum: 10
-};
+"use strict";
 
-function getFinancialSettings() {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem("valdynetFinancialSettings") || "{}"
-    );
+/*
+ * VALDYNET TRANSFERT
+ * JavaScript jeneral sit la.
+ *
+ * Vèsyon sa a prepare fonksyon debaz yo.
+ * Li poko konekte ak Supabase oswa Netlify Functions.
+ */
 
-    return {
-      ...DEFAULT_FINANCIAL_SETTINGS,
-      ...saved
-    };
-  } catch {
-    return DEFAULT_FINANCIAL_SETTINGS;
-  }
-}
+const ValdynetApp = (() => {
 
-// Frè Valdynet: 5% jiska $30, 10% sou tout montan
-// lè tranzaksyon an depase $30.
-function calculateValdynetFee(amountUSD) {
-  const settings = getFinancialSettings();
+  const CONFIG = {
+    brand: "Valdynet Transfert",
+    storage: {
+      financialSettings: "valdynetFinancialSettings",
+      demoProfile: "valdynetDemoProfile"
+    }
+  };
 
-  if (!Number.isFinite(amountUSD) || amountUSD < settings.minimum) {
-    throw new Error(
-      `Minimum transaction is $${settings.minimum} USD.`
-    );
-  }
+  const DEFAULT_FINANCIAL_SETTINGS = Object.freeze({
+    depositRate: 140,
+    withdrawRate: 130,
+    lowRate: 5,
+    highRate: 10,
+    threshold: 30,
+    minimum: 10
+  });
 
-  const rate = amountUSD <= settings.threshold
-    ? settings.lowRate / 100
-    : settings.highRate / 100;
+  function getFinancialSettings() {
+    try {
+      const saved = localStorage.getItem(
+        CONFIG.storage.financialSettings
+      );
 
-  return Number((amountUSD * rate).toFixed(2));
-}
+      if (!saved) {
+        return { ...DEFAULT_FINANCIAL_SETTINGS };
+      }
 
-// To echanj diferan pou depo ak retrè.
-function convertCurrency(amount, fromCurrency, toCurrency, operation) {
-  const settings = getFinancialSettings();
+      const parsed = JSON.parse(saved);
 
-  let rate;
-
-  if (operation === "deposit") {
-    rate = settings.depositRate;
-  } else if (operation === "withdraw") {
-    rate = settings.withdrawRate;
-  } else {
-    throw new Error("Unknown transaction operation.");
+      return {
+        ...DEFAULT_FINANCIAL_SETTINGS,
+        ...parsed
+      };
+    } catch (error) {
+      console.error("Financial settings error:", error);
+      return { ...DEFAULT_FINANCIAL_SETTINGS };
+    }
   }
 
-  if (fromCurrency === toCurrency) {
-    return Number(amount.toFixed(2));
+  function formatMoney(amount, currency = "USD") {
+    const safeCurrency = currency === "HTG" ? "HTG" : "USD";
+
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: safeCurrency
+    }).format(Number(amount) || 0);
   }
 
-  if (fromCurrency === "USD" && toCurrency === "HTG") {
-    return Number((amount * rate).toFixed(2));
+  function formatDate(dateValue) {
+    if (!dateValue) return "—";
+
+    const date = new Date(dateValue);
+
+    if (Number.isNaN(date.getTime())) {
+      return "—";
+    }
+
+    return new Intl.DateTimeFormat("fr-FR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(date);
   }
 
-  if (fromCurrency === "HTG" && toCurrency === "USD") {
-    return Number((amount / rate).toFixed(2));
+  function getElement(selector) {
+    return document.querySelector(selector);
   }
 
-  throw new Error("Unsupported currency conversion.");
-}
+  function setText(selector, value) {
+    const element = getElement(selector);
 
-// Rezime montan kliyan an.
-function calculateTransaction(amountUSD, operation) {
-  const settings = getFinancialSettings();
-  const valdynetFee = calculateValdynetFee(amountUSD);
+    if (element) {
+      element.textContent = value ?? "";
+    }
+  }
 
-  const exchangeRate = operation === "deposit"
-    ? settings.depositRate
-    : settings.withdrawRate;
+  function showMessage(selector, message) {
+    setText(selector, message);
+  }
+
+  function validateEmail(email) {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(String(email || "").trim());
+  }
+
+  function validatePhone(phone) {
+    const cleaned = String(phone || "").trim();
+    return cleaned.length >= 7 && cleaned.length <= 20;
+  }
+
+  function generateReference() {
+    const randomPart = Math.random()
+      .toString(36)
+      .substring(2, 10)
+      .toUpperCase();
+
+    return `VT-${Date.now()}-${randomPart}`;
+  }
+
+  function getCurrentYear() {
+    return new Date().getFullYear();
+  }
+
+  function updateCurrentYear() {
+    document.querySelectorAll("#current-year").forEach(element => {
+      element.textContent = getCurrentYear();
+    });
+  }
+
+  function initialize() {
+    updateCurrentYear();
+  }
 
   return {
-    originalAmountUSD: Number(amountUSD.toFixed(2)),
-    exchangeRate,
-    convertedAmountHTG: Number((amountUSD * exchangeRate).toFixed(2)),
-    valdynetFeeUSD: valdynetFee,
-    providerFeeUSD: 0,
-    totalBeforeProviderFeesUSD: Number(
-      (amountUSD + valdynetFee).toFixed(2)
-    )
+    CONFIG,
+    DEFAULT_FINANCIAL_SETTINGS,
+    getFinancialSettings,
+    formatMoney,
+    formatDate,
+    getElement,
+    setText,
+    showMessage,
+    validateEmail,
+    validatePhone,
+    generateReference,
+    updateCurrentYear,
+    initialize
   };
-}
+
+})();
+
+document.addEventListener("DOMContentLoaded", () => {
+  ValdynetApp.initialize();
+});
+
+/*
+ * Fonksyon yo disponib sou lòt paj yo atravè:
+ * ValdynetApp.formatMoney(...)
+ * ValdynetApp.getFinancialSettings()
+ * ValdynetApp.validateEmail(...)
+ */
