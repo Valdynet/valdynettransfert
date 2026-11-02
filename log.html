@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="../index.html" class="logo">Valdynet <span>Transfert</span></a>
+  </header>
+
+  <main class="transaction-section">
+    <h2>Connexion administrateur</h2>
+    <p>Accès réservé au personnel autorisé.</p>
+
+    <form id="admin-login-form">
+      <label for="admin-email">Adresse e-mail</label>
+      <input id="admin-email" type="email" autocomplete="username" required>
+
+      <label for="admin-password">Mot de passe</label>
+      <input id="admin-password" type="password"
+             autocomplete="current-password" required>
+
+      <button type="submit" class="primary-button">
+        Se connecter
+      </button>
+
+      <p id="admin-login-message" role="status"></p>
+    </form>
+  </main>
+
+  <footer>
+    <p>© <span id="current-year"></span> Valdynet Transfert.</p>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+
+    document.getElementById("admin-login-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      document.getElementById("admin-login-message").textContent =
+        "La connexion administrateur sera activée avec le serveur sécurisé.";
+    });
+  </script>
+
+</body>
+</html>

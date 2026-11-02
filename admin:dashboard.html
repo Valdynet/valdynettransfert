@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    .admin-page {
+      padding: 40px 6%;
+    }
+
+    .admin-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 22px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card h3 {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stat-card p {
+      font-size: 27px;
+      font-weight: 800;
+      color: var(--red);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .transaction-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 750px;
+    }
+
+    .transaction-table th,
+    .transaction-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .transaction-table th {
+      background: #f5f5f5;
+    }
+
+    .status {
+      font-weight: 700;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .admin-actions button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .approve-button {
+      background: var(--yellow);
+    }
+
+    .complete-button {
+      background: #d9f2df;
+    }
+
+    .reject-button {
+      background: #f8d7da;
+    }
+
+    @media (max-width: 800px) {
+      .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 450px) {
+      .admin-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="../index.html" class="logo">Valdynet <span>Transfert</span></a>
+    <nav>
+      <a href="../index.html">Voir le site</a>
+      <a href="login.html">Déconnexion</a>
+    </nav>
+  </header>
+
+  <main class="admin-page">
+
+    <div class="admin-top">
+      <div>
+        <h1>Tableau de bord</h1>
+        <p>Gestion des demandes de transfert</p>
+      </div>
+    </div>
+
+    <section class="admin-stats">
+      <div class="stat-card">
+        <h3>Total des demandes</h3>
+        <p id="total-count">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>En attente</h3>
+        <p id="pending-count">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>En traitement</h3>
+        <p id="processing-count">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Terminées</h3>
+        <p id="completed-count">0</p>
+      </div>
+    </section>
+
+    <section class="table-container">
+      <h2>Demandes de transaction</h2>
+
+      <table class="transaction-table">
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Client</th>
+            <th>Service</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="transactions-list">
+          <tr>
+            <td colspan="6">
+              Les transactions apparaîtront ici après la connexion au serveur.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© <span id="current-year"></span> Valdynet Transfert.</p>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>
