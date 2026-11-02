@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres - Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .settings-container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 25px;
+    }
+
+    .settings-card {
+      background: #fff;
+      padding: 24px;
+      margin: 20px 0;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px rgba(0,0,0,.08);
+    }
+
+    .settings-card h2 {
+      margin-top: 0;
+    }
+
+    .settings-field {
+      margin: 18px 0;
+    }
+
+    .settings-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .settings-field input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      box-sizing: border-box;
+    }
+
+    .save-settings {
+      padding: 13px 22px;
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #d71920;
+      color: white;
+    }
+
+    .settings-message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .settings-note {
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="settings-container">
+    <h1>Paramètres financiers</h1>
+    <p>Konfigire to echanj ak frè sèvis Valdynet Transfert.</p>
+
+    <section class="settings-card">
+      <h2>To echanj</h2>
+
+      <div class="settings-field">
+        <label for="depositRate">To pou depo (HTG pou 1 USD)</label>
+        <input id="depositRate" type="number" min="1" step="0.01" value="140">
+      </div>
+
+      <div class="settings-field">
+        <label for="withdrawRate">To pou retrè (HTG pou 1 USD)</label>
+        <input id="withdrawRate" type="number" min="1" step="0.01" value="130">
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <h2>Frè sèvis Valdynet</h2>
+
+      <div class="settings-field">
+        <label for="lowRate">Frè pou tranzaksyon $10 rive $30 (%)</label>
+        <input id="lowRate" type="number" min="0" max="100" step="0.01" value="5">
+      </div>
+
+      <div class="settings-field">
+        <label for="highRate">Frè pou tranzaksyon ki depase $30 (%)</label>
+        <input id="highRate" type="number" min="0" max="100" step="0.01" value="10">
+      </div>
+
+      <div class="settings-field">
+        <label for="threshold">Limit ant de nivo frè yo (USD)</label>
+        <input id="threshold" type="number" min="10" step="0.01" value="30">
+      </div>
+
+      <div class="settings-field">
+        <label for="minimum">Montan minimòm tranzaksyon (USD)</label>
+        <input id="minimum" type="number" min="0" step="0.01" value="10">
+      </div>
+
+      <p class="settings-note">
+        Frè founisè tankou PayPal, Wise, MonCash ak NatCash
+        pa enkli nan frè sèvis Valdynet la.
+      </p>
+    </section>
+
+    <button class="save-settings" id="saveSettings">
+      Anrejistre paramèt yo
+    </button>
+
+    <p class="settings-message" id="settingsMessage"></p>
+  </main>
+
+  <script>
+    const DEFAULT_SETTINGS = {
+      depositRate: 140,
+      withdrawRate: 130,
+      lowRate: 5,
+      highRate: 10,
+      threshold: 30,
+      minimum: 10
+    };
+
+    function loadSettings() {
+      let saved = {};
+
+      try {
+        saved = JSON.parse(
+          localStorage.getItem("valdynetFinancialSettings") || "{}"
+        );
+      } catch (error) {
+        saved = {};
+      }
+
+      const settings = { ...DEFAULT_SETTINGS, ...saved };
+
+      Object.entries(settings).forEach(([key, value]) => {
+        const field = document.getElementById(key);
+        if (field) field.value = value;
+      });
+    }
+
+    document.getElementById("saveSettings").addEventListener("click", () => {
+      const settings = {
+        depositRate: Number(document.getElementById("depositRate").value),
+        withdrawRate: Number(document.getElementById("withdrawRate").value),
+        lowRate: Number(document.getElementById("lowRate").value),
+        highRate: Number(document.getElementById("highRate").value),
+        threshold: Number(document.getElementById("threshold").value),
+        minimum: Number(document.getElementById("minimum").value)
+      };
+
+      const valid = Object.values(settings).every(
+        value => Number.isFinite(value) && value > 0
+      );
+
+      if (!valid ||
+          settings.lowRate > 100 ||
+          settings.highRate > 100 ||
+          settings.minimum > settings.threshold) {
+        document.getElementById("settingsMessage").textContent =
+          "Tanpri verifye tout valè yo.";
+        return;
+      }
+
+      localStorage.setItem(
+        "valdynetFinancialSettings",
+        JSON.stringify(settings)
+      );
+
+      document.getElementById("settingsMessage").textContent =
+        "Paramèt yo anrejistre sou navigatè sa a.";
+    });
+
+    loadSettings();
+  </script>
+</body>
+</html>
