@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détails de transaction | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    .details-page {
+      max-width: 1050px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .details-card {
+      background: white;
+      padding: 28px;
+      margin: 22px 0;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .detail-item {
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+
+    .detail-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .detail-item strong {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .detail-actions button {
+      border: 0;
+      border-radius: 6px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .action-approve {
+      background: var(--yellow);
+    }
+
+    .action-complete {
+      background: #d9f2df;
+    }
+
+    .action-reject {
+      background: #f8d7da;
+    }
+
+    @media (max-width: 600px) {
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .details-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <a href="../index.html" class="logo">
+      Valdynet <span>Transfert</span>
+    </a>
+
+    <nav>
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="../index.html">Site client</a>
+    </nav>
+  </header>
+
+  <main class="details-page">
+
+    <h1>Détails de la transaction</h1>
+    <p>Vérification et gestion de la demande du client.</p>
+
+    <section class="details-card">
+      <h2>Informations de la transaction</h2>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <span>Transaction ID</span>
+          <strong id="transaction-id">En attente de connexion</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Date de demande</span>
+          <strong id="transaction-date">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Service demandé</span>
+          <strong id="transaction-service">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Statut</span>
+          <strong id="transaction-status">Pending</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="details-card">
+      <h2>Informations du client</h2>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <span>Nom complet</span>
+          <strong id="customer-name">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>E-mail</span>
+          <strong id="customer-email">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Téléphone</span>
+          <strong id="customer-phone">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Compte / Informations de réception</span>
+          <strong id="customer-account">Non disponible</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="details-card">
+      <h2>Informations financières</h2>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <span>Montant original</span>
+          <strong id="original-amount">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Montant converti</span>
+          <strong id="converted-amount">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Frais</span>
+          <strong id="transaction-fee">Non disponible</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Total</span>
+          <strong id="transaction-total">Non disponible</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="details-card">
+      <h2>Gestion de la demande</h2>
+
+      <label for="admin-note">Note de l'administrateur</label>
+      <textarea id="admin-note" rows="4"
+        placeholder="Ajouter une note sur cette transaction..."></textarea>
+
+      <div class="detail-actions">
+        <button class="action-approve" type="button" disabled>
+          Approuver / Traiter
+        </button>
+
+        <button class="action-complete" type="button" disabled>
+          Confirmer comme terminée
+        </button>
+
+        <button class="action-reject" type="button" disabled>
+          Rejeter la demande
+        </button>
+      </div>
+
+      <p>
+        Les actions seront activées après la connexion sécurisée au serveur.
+      </p>
+    </section>
+
+    <a href="dashboard.html">← Retour au tableau de bord</a>
+
+  </main>
+
+  <footer>
+    <p>© <span id="current-year"></span> Valdynet Transfert.</p>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>
