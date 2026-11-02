@@ -4,14 +4,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dekoneksyon | Valdynet Transfert</title>
+  <meta name="description" content="Dekonekte sou Valdynet Transfert.">
+  <title>Dekonekte | Valdynet Transfert</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-  <main style="max-width:600px;margin:80px auto;padding:20px;text-align:center;">
-    <h1>Dekoneksyon</h1>
-    <p>Sistèm dekoneksyon an poko konekte ak Supabase.</p>
-    <a href="../login.html">Retounen nan koneksyon</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="../index.html" class="logo">Valdynet Transfert</a>
+      <p class="tagline">Sevis rapid</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-heading">
+      <h1>Dekonekte</h1>
+      <p>Ou vle kite espas kliyan Valdynet Transfert la?</p>
+    </section>
+
+    <section class="card">
+      <h2>Konfime dekoneksyon</h2>
+      <p>
+        Sistèm koneksyon kliyan an poko aktive. Lè nou konekte Supabase Auth,
+        bouton sa a ap fè yon vrè dekoneksyon sekirize.
+      </p>
+
+      <p id="logout-message" role="status" aria-live="polite"></p>
+
+      <div class="form-actions">
+        <a href="dashboard.html" class="btn btn-secondary">
+          Retounen nan Dashboard
+        </a>
+
+        <a href="../login.html" class="btn btn-primary">
+          Ale nan paj koneksyon
+        </a>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="current-year"></span> Valdynet Transfert. Tout dwa rezève.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+  </script>
+
 </body>
 </html>
