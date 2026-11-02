@@ -1,221 +1,325 @@
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ht">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Détails de transaction | Valdynet Transfert</title>
+  <meta name="description" content="Jesyon detay tranzaksyon Valdynet Transfert.">
+  <title>Detay Tranzaksyon | Valdynet Transfert</title>
   <link rel="stylesheet" href="../assets/css/style.css">
-
-  <style>
-    .details-page {
-      max-width: 1050px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .details-card {
-      background: white;
-      padding: 28px;
-      margin: 22px 0;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-    }
-
-    .details-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 22px;
-    }
-
-    .detail-item {
-      border-bottom: 1px solid var(--border);
-      padding: 12px 0;
-    }
-
-    .detail-item span {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .detail-item strong {
-      display: block;
-      overflow-wrap: anywhere;
-    }
-
-    .detail-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .detail-actions button {
-      border: 0;
-      border-radius: 6px;
-      padding: 12px 18px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .action-approve {
-      background: var(--yellow);
-    }
-
-    .action-complete {
-      background: #d9f2df;
-    }
-
-    .action-reject {
-      background: #f8d7da;
-    }
-
-    @media (max-width: 600px) {
-      .details-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .details-card {
-        padding: 20px;
-      }
-    }
-  </style>
 </head>
-
 <body>
 
   <header class="site-header">
-    <a href="../index.html" class="logo">
-      Valdynet <span>Transfert</span>
-    </a>
+    <div class="container">
+      <a href="../index.html" class="logo">Valdynet Transfert</a>
+      <p class="tagline">Sevis rapid</p>
 
-    <nav>
-      <a href="dashboard.html">Tableau de bord</a>
-      <a href="../index.html">Site client</a>
-    </nav>
+      <nav class="admin-nav" aria-label="Meni administratè">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="transaction-details.html" aria-current="page">Tranzaksyon</a>
+        <a href="settings.html">Paramèt finansye</a>
+        <a href="login.html">Koneksyon Admin</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="details-page">
+  <main class="container">
 
-    <h1>Détails de la transaction</h1>
-    <p>Vérification et gestion de la demande du client.</p>
+    <section class="page-heading">
+      <h1>Jesyon Tranzaksyon</h1>
+      <p>Egzamine demann kliyan yo epi swiv estati chak tranzaksyon.</p>
+    </section>
 
-    <section class="details-card">
-      <h2>Informations de la transaction</h2>
+    <section class="card">
+      <h2>Chèche Tranzaksyon</h2>
 
-      <div class="details-grid">
-        <div class="detail-item">
-          <span>Transaction ID</span>
-          <strong id="transaction-id">En attente de connexion</strong>
-        </div>
+      <div class="form-group">
+        <label for="transaction-search">Transaction ID</label>
+        <input
+          type="search"
+          id="transaction-search"
+          placeholder="Antre Transaction ID..."
+        >
+      </div>
 
-        <div class="detail-item">
-          <span>Date de demande</span>
-          <strong id="transaction-date">Non disponible</strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Service demandé</span>
-          <strong id="transaction-service">Non disponible</strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Statut</span>
-          <strong id="transaction-status">Pending</strong>
-        </div>
+      <div class="form-group">
+        <label for="status-filter">Filtre selon estati</label>
+        <select id="status-filter">
+          <option value="all">Tout estati yo</option>
+          <option value="Pending">Pending</option>
+          <option value="Processing">Processing</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Rejected">Rejected</option>
+        </select>
       </div>
     </section>
 
-    <section class="details-card">
-      <h2>Informations du client</h2>
+    <section class="card">
+      <h2>Lis Demann yo</h2>
 
-      <div class="details-grid">
-        <div class="detail-item">
-          <span>Nom complet</span>
-          <strong id="customer-name">Non disponible</strong>
-        </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Kliyan</th>
+              <th>Sèvis</th>
+              <th>Montan</th>
+              <th>Estati</th>
+              <th>Aksyon</th>
+            </tr>
+          </thead>
 
-        <div class="detail-item">
-          <span>E-mail</span>
-          <strong id="customer-email">Non disponible</strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Téléphone</span>
-          <strong id="customer-phone">Non disponible</strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Compte / Informations de réception</span>
-          <strong id="customer-account">Non disponible</strong>
-        </div>
-      </div>
-    </section>
-
-    <section class="details-card">
-      <h2>Informations financières</h2>
-
-      <div class="details-grid">
-        <div class="detail-item">
-          <span>Montant original</span>
-          <strong id="original-amount">Non disponible</strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Montant converti</span>
-          <strong id="converted-amount">Non disponible</strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Frais</span>
-          <strong id="transaction-fee">Non disponible</strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Total</span>
-          <strong id="transaction-total">Non disponible</strong>
-        </div>
-      </div>
-    </section>
-
-    <section class="details-card">
-      <h2>Gestion de la demande</h2>
-
-      <label for="admin-note">Note de l'administrateur</label>
-      <textarea id="admin-note" rows="4"
-        placeholder="Ajouter une note sur cette transaction..."></textarea>
-
-      <div class="detail-actions">
-        <button class="action-approve" type="button" disabled>
-          Approuver / Traiter
-        </button>
-
-        <button class="action-complete" type="button" disabled>
-          Confirmer comme terminée
-        </button>
-
-        <button class="action-reject" type="button" disabled>
-          Rejeter la demande
-        </button>
+          <tbody id="transaction-list">
+            <tr>
+              <td colspan="6">Pa gen tranzaksyon pou montre kounye a.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <p>
-        Les actions seront activées après la connexion sécurisée au serveur.
-      </p>
+      <p id="list-message" role="status" aria-live="polite"></p>
     </section>
 
-    <a href="dashboard.html">← Retour au tableau de bord</a>
+    <section class="card">
+      <h2>Detay Tranzaksyon</h2>
+
+      <p><strong>Transaction ID:</strong> <span id="detail-id">—</span></p>
+      <p><strong>Kliyan:</strong> <span id="detail-customer">—</span></p>
+      <p><strong>Imèl:</strong> <span id="detail-email">—</span></p>
+      <p><strong>Telefòn:</strong> <span id="detail-phone">—</span></p>
+      <p><strong>Sèvis:</strong> <span id="detail-service">—</span></p>
+      <p><strong>Montan orijinal:</strong> <span id="detail-original">—</span></p>
+      <p><strong>Montan konvèti:</strong> <span id="detail-converted">—</span></p>
+      <p><strong>Frè Valdynet:</strong> <span id="detail-fee">—</span></p>
+      <p><strong>Frè founisè:</strong> <span id="detail-provider-fee">—</span></p>
+      <p><strong>Total:</strong> <span id="detail-total">—</span></p>
+      <p><strong>Metòd peman:</strong> <span id="detail-payment">—</span></p>
+      <p><strong>Transaction ID peman:</strong> <span id="detail-payment-id">—</span></p>
+      <p><strong>Estati:</strong> <span id="detail-status">—</span></p>
+      <p><strong>Dat demann:</strong> <span id="detail-date">—</span></p>
+      <p><strong>Nòt kliyan:</strong> <span id="detail-notes">—</span></p>
+
+      <div class="form-group">
+        <label for="new-status">Chanje estati (demonstrasyon)</label>
+        <select id="new-status">
+          <option value="Pending">Pending</option>
+          <option value="Processing">Processing</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="admin-note">Nòt administratè</label>
+        <textarea
+          id="admin-note"
+          rows="4"
+          placeholder="Ekri yon nòt sou demann sa a..."
+        ></textarea>
+      </div>
+
+      <p id="action-message" role="status" aria-live="polite"></p>
+
+      <button type="button" id="save-status" class="btn btn-primary" disabled>
+        Sove Chanjman
+      </button>
+    </section>
 
   </main>
 
-  <footer>
-    <p>© <span id="current-year"></span> Valdynet Transfert.</p>
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="current-year"></span> Valdynet Transfert. Tout dwa rezève.</p>
+    </div>
   </footer>
 
+  <script src="../assets/js/app.js"></script>
+
   <script>
+    /*
+      Lis demonstrasyon an vid.
+      Pa gen done reyèl oswa chanjman estati ki anrejistre.
+      Apre koneksyon backend, Netlify Function pral verifye
+      administratè a epi jere tout chanjman yo.
+    */
+
+    const transactions = [];
+
+    let selectedTransaction = null;
+
+    const searchInput = document.getElementById("transaction-search");
+    const statusFilter = document.getElementById("status-filter");
+    const transactionList = document.getElementById("transaction-list");
+    const listMessage = document.getElementById("list-message");
+    const actionMessage = document.getElementById("action-message");
+    const saveButton = document.getElementById("save-status");
+
+    function formatAmount(amount, currency) {
+      const safeCurrency = currency === "HTG" ? "HTG" : "USD";
+
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: safeCurrency
+      }).format(Number(amount) || 0);
+    }
+
+    function showDetail(transaction) {
+      selectedTransaction = transaction;
+
+      document.getElementById("detail-id").textContent =
+        transaction.id || "—";
+
+      document.getElementById("detail-customer").textContent =
+        transaction.customer || "—";
+
+      document.getElementById("detail-email").textContent =
+        transaction.email || "—";
+
+      document.getElementById("detail-phone").textContent =
+        transaction.phone || "—";
+
+      document.getElementById("detail-service").textContent =
+        transaction.service || "—";
+
+      document.getElementById("detail-original").textContent =
+        transaction.amount !== undefined
+          ? formatAmount(transaction.amount, transaction.currency)
+          : "—";
+
+      document.getElementById("detail-converted").textContent =
+        transaction.convertedAmount !== undefined
+          ? formatAmount(
+              transaction.convertedAmount,
+              transaction.convertedCurrency
+            )
+          : "—";
+
+      document.getElementById("detail-fee").textContent =
+        transaction.serviceFee !== undefined
+          ? formatAmount(transaction.serviceFee, transaction.currency)
+          : "—";
+
+      document.getElementById("detail-provider-fee").textContent =
+        transaction.providerFee !== undefined
+          ? formatAmount(transaction.providerFee, transaction.currency)
+          : "Ap konfime";
+
+      document.getElementById("detail-total").textContent =
+        transaction.total !== undefined
+          ? formatAmount(transaction.total, transaction.currency)
+          : "—";
+
+      document.getElementById("detail-payment").textContent =
+        transaction.paymentMethod || "—";
+
+      document.getElementById("detail-payment-id").textContent =
+        transaction.paymentTransactionId || "—";
+
+      document.getElementById("detail-status").textContent =
+        transaction.status || "Pending";
+
+      document.getElementById("detail-date").textContent =
+        transaction.date || "—";
+
+      document.getElementById("detail-notes").textContent =
+        transaction.notes || "Pa gen nòt.";
+
+      document.getElementById("new-status").value =
+        transaction.status || "Pending";
+
+      document.getElementById("admin-note").value =
+        transaction.adminNote || "";
+
+      saveButton.disabled = false;
+      actionMessage.textContent = "";
+    }
+
+    function renderTransactions() {
+      const search = searchInput.value.trim().toLowerCase();
+      const status = statusFilter.value;
+
+      const filtered = transactions.filter(function(transaction) {
+        const matchesSearch =
+          String(transaction.id || "").toLowerCase().includes(search);
+
+        const matchesStatus =
+          status === "all" || transaction.status === status;
+
+        return matchesSearch && matchesStatus;
+      });
+
+      transactionList.innerHTML = "";
+
+      if (filtered.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 6;
+        cell.textContent = transactions.length === 0
+          ? "Pa gen tranzaksyon pou montre kounye a."
+          : "Pa gen rezilta ki koresponn ak rechèch la.";
+
+        row.appendChild(cell);
+        transactionList.appendChild(row);
+        listMessage.textContent = "";
+        return;
+      }
+
+      filtered.forEach(function(transaction) {
+        const row = document.createElement("tr");
+
+        const values = [
+          transaction.id,
+          transaction.customer,
+          transaction.service,
+          formatAmount(transaction.amount, transaction.currency),
+          transaction.status
+        ];
+
+        values.forEach(function(value) {
+          const cell = document.createElement("td");
+          cell.textContent = value || "—";
+          row.appendChild(cell);
+        });
+
+        const actionCell = document.createElement("td");
+        const viewButton = document.createElement("button");
+
+        viewButton.type = "button";
+        viewButton.textContent = "Gade detay";
+        viewButton.className = "btn btn-secondary";
+
+        viewButton.addEventListener("click", function() {
+          showDetail(transaction);
+        });
+
+        actionCell.appendChild(viewButton);
+        row.appendChild(actionCell);
+
+        transactionList.appendChild(row);
+      });
+
+      listMessage.textContent = `${filtered.length} tranzaksyon jwenn.`;
+    }
+
+    saveButton.addEventListener("click", function() {
+      if (!selectedTransaction) return;
+
+      actionMessage.textContent =
+        "Fonksyon sa a poko konekte ak backend. Pa gen estati ki chanje oswa ki anrejistre.";
+    });
+
+    searchInput.addEventListener("input", renderTransactions);
+    statusFilter.addEventListener("change", renderTransactions);
+
     document.getElementById("current-year").textContent =
       new Date().getFullYear();
+
+    renderTransactions();
   </script>
 
 </body>
