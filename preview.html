@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Valdynet Transfert - Service rapide et sécurisé de transfert entre PayPal, Wise, MonCash et NatCash.">
+  <title>Valdynet Transfert | Sevis rapid</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="logo">Valdynet <span>Transfert</span></a>
+
+    <nav>
+      <a href="#accueil">Accueil</a>
+      <a href="#services">Services</a>
+      <a href="#transaction">Nouvelle transaction</a>
+      <a href="#contact">Contact</a>
+      <a href="login.html" class="login-link">Connexion</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="accueil" class="hero">
+      <p class="eyebrow">SEVIS RAPID</p>
+      <h1>Vos transferts, simplement et rapidement.</h1>
+      <p>
+        Échangez et transférez votre argent entre PayPal, Wise,
+        MonCash et NatCash avec un suivi de transaction.
+      </p>
+      <a href="#transaction" class="primary-button">Commencer une transaction</a>
+    </section>
+
+    <section id="services" class="services-section">
+      <h2>Nos services</h2>
+      <p>Choisissez le type de transfert dont vous avez besoin.</p>
+
+      <div class="service-grid">
+        <article class="service-card">
+          <h3>PayPal</h3>
+          <p>Dépôt et retrait PayPal via MonCash ou NatCash.</p>
+        </article>
+
+        <article class="service-card">
+          <h3>Wise</h3>
+          <p>Dépôt et retrait Wise via MonCash ou NatCash.</p>
+        </article>
+
+        <article class="service-card">
+          <h3>Échange PayPal / Wise</h3>
+          <p>Transferts entre vos comptes PayPal et Wise.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="transaction" class="transaction-section">
+      <h2>Nouvelle transaction</h2>
+      <p>Remplissez le formulaire pour envoyer votre demande.</p>
+
+      <form id="transaction-form">
+        <label for="fullName">Nom complet</label>
+        <input id="fullName" name="fullName" type="text" required>
+
+        <label for="email">Adresse e-mail</label>
+        <input id="email" name="email" type="email" required>
+
+        <label for="phone">Téléphone / WhatsApp</label>
+        <input id="phone" name="phone" type="tel" required>
+
+        <label for="service">Service souhaité</label>
+        <select id="service" name="service" required>
+          <option value="">Choisir un service</option>
+          <option value="deposit-paypal-local">Dépôt PayPal via MonCash / NatCash</option>
+          <option value="withdraw-paypal-local">Retrait PayPal via MonCash / NatCash</option>
+          <option value="deposit-wise-local">Dépôt Wise via MonCash / NatCash</option>
+          <option value="withdraw-wise-local">Retrait Wise via MonCash / NatCash</option>
+          <option value="deposit-wise-paypal">Dépôt Wise via PayPal</option>
+          <option value="deposit-paypal-wise">Dépôt PayPal via Wise</option>
+          <option value="withdraw-wise-paypal">Retrait Wise via PayPal</option>
+          <option value="withdraw-paypal-wise">Retrait PayPal via Wise</option>
+        </select>
+
+        <label for="amount">Montant</label>
+        <input id="amount" name="amount" type="number" min="0.01" step="0.01" required>
+
+        <label for="currency">Devise</label>
+        <select id="currency" name="currency" required>
+          <option value="USD">USD</option>
+          <option value="HTG">HTG</option>
+        </select>
+
+        <label for="accountDetails">Compte de réception / détails nécessaires</label>
+        <input id="accountDetails" name="accountDetails" type="text" required>
+
+        <label for="notes">Informations supplémentaires (facultatif)</label>
+        <textarea id="notes" name="notes" rows="4"></textarea>
+
+        <button type="submit" class="primary-button">
+          Envoyer ma demande
+        </button>
+
+        <p id="form-message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <h2>Contactez-nous</h2>
+      <p>Une question concernant votre transfert ? Contactez notre équipe.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="current-year"></span> Valdynet Transfert. Tous droits réservés.</p>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
