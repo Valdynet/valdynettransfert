@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Créez votre compte Valdynet Transfert.">
+  <title>Créer un compte | Valdynet Transfert</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="logo">Valdynet <span>Transfert</span></a>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="index.html#services">Services</a>
+      <a href="login.html">Connexion</a>
+    </nav>
+  </header>
+
+  <main class="transaction-section">
+    <h2>Créer votre compte</h2>
+    <p>Inscrivez-vous pour suivre vos demandes de transfert.</p>
+
+    <form id="register-form">
+
+      <label for="fullName">Nom complet</label>
+      <input
+        type="text"
+        id="fullName"
+        name="fullName"
+        autocomplete="name"
+        required
+      >
+
+      <label for="email">Adresse e-mail</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        autocomplete="email"
+        required
+      >
+
+      <label for="phone">Téléphone / WhatsApp</label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        autocomplete="tel"
+        required
+      >
+
+      <label for="password">Mot de passe</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        minlength="8"
+        autocomplete="new-password"
+        required
+      >
+
+      <label for="confirmPassword">Confirmer le mot de passe</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        minlength="8"
+        autocomplete="new-password"
+        required
+      >
+
+      <button type="submit" class="primary-button">
+        Créer mon compte
+      </button>
+
+      <p id="register-message" role="status"></p>
+
+      <p>
+        Vous avez déjà un compte ?
+        <a href="login.html">Connectez-vous</a>
+      </p>
+
+    </form>
+  </main>
+
+  <footer>
+    <p>© <span id="current-year"></span> Valdynet Transfert. Tous droits réservés.</p>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+
+    document.getElementById("register-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const message = document.getElementById("register-message");
+
+      if (password !== confirmPassword) {
+        message.textContent = "Les mots de passe ne correspondent pas.";
+        return;
+      }
+
+      message.textContent =
+        "Le système d'inscription sera activé après la configuration de Supabase.";
+    });
+  </script>
+
+</body>
+</html>
