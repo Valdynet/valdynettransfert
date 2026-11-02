@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espas Kliyan | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    .customer-layout {
+      max-width: 1150px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+
+    .customer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .customer-header h1 {
+      margin: 0 0 7px;
+    }
+
+    .customer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .customer-nav a {
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 7px;
+      background: #f2f2f2;
+      color: #222;
+    }
+
+    .customer-nav a.active {
+      background: #d71920;
+      color: white;
+    }
+
+    .customer-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .customer-card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 3px 14px rgba(0,0,0,.07);
+    }
+
+    .customer-card p {
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .customer-card h2 {
+      margin: 0;
+      font-size: 27px;
+    }
+
+    .customer-section {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 14px rgba(0,0,0,.07);
+      overflow-x: auto;
+    }
+
+    .customer-section h2 {
+      margin-top: 0;
+    }
+
+    .transaction-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    .transaction-table th,
+    .transaction-table td {
+      padding: 13px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .transaction-table th {
+      background: #f8f8f8;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .status.pending {
+      background: #fff1c7;
+      color: #805900;
+    }
+
+    .status.processing {
+      background: #dcecff;
+      color: #174d88;
+    }
+
+    .status.completed {
+      background: #d9f5df;
+      color: #17652a;
+    }
+
+    .customer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .customer-button {
+      display: inline-block;
+      padding: 13px 18px;
+      background: #d71920;
+      color: white;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .customer-button.secondary {
+      background: #222;
+    }
+
+    .empty-message {
+      color: #777;
+      padding: 15px 0;
+    }
+
+    @media (max-width: 600px) {
+      .customer-layout {
+        padding: 12px;
+      }
+
+      .customer-section {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="customer-layout">
+
+    <header class="customer-header">
+      <div>
+        <h1>Bonjou, Kliyan!</h1>
+        <p>Byenveni nan espas kliyan Valdynet Transfert.</p>
+      </div>
+
+      <a href="../index.html" class="customer-button secondary">
+        Retounen sou sit la
+      </a>
+    </header>
+
+    <nav class="customer-nav">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="new-transfer.html">Nouvo tranzaksyon</a>
+      <a href="history.html">Istwa tranzaksyon</a>
+      <a href="profile.html">Pwofil mwen</a>
+    </nav>
+
+    <section class="customer-actions">
+      <a href="new-transfer.html" class="customer-button">
+        + Fè yon tranzaksyon
+      </a>
+
+      <a href="history.html" class="customer-button secondary">
+        Gade tout tranzaksyon yo
+      </a>
+    </section>
+
+    <section class="customer-cards">
+
+      <article class="customer-card">
+        <p>Total tranzaksyon</p>
+        <h2 id="totalTransactions">0</h2>
+      </article>
+
+      <article class="customer-card">
+        <p>Tranzaksyon an atant</p>
+        <h2 id="pendingTransactions">0</h2>
+      </article>
+
+      <article class="customer-card">
+        <p>Tranzaksyon an kou</p>
+        <h2 id="processingTransactions">0</h2>
+      </article>
+
+      <article class="customer-card">
+        <p>Tranzaksyon fini</p>
+        <h2 id="completedTransactions">0</h2>
+      </article>
+
+    </section>
+
+    <section class="customer-section">
+      <h2>Dènye tranzaksyon mwen yo</h2>
+
+      <table class="transaction-table">
+        <thead>
+          <tr>
+            <th>Nimewo tranzaksyon</th>
+            <th>Sèvis</th>
+            <th>Montan</th>
+            <th>Dat</th>
+            <th>Estati</th>
+          </tr>
+        </thead>
+
+        <tbody id="transactionList">
+          <tr>
+            <td colspan="5" class="empty-message">
+              Pa gen tranzaksyon pou montre pou kounye a.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="customer-section">
+      <h2>Enfòmasyon sou kont mwen</h2>
+      <p><strong>Non:</strong> <span id="customerName">Ap tann koneksyon...</span></p>
+      <p><strong>Imèl:</strong> <span id="customerEmail">Ap tann koneksyon...</span></p>
+      <p><strong>Estati kont:</strong> <span id="accountStatus">Pa konekte</span></p>
+    </section>
+
+  </main>
+
+  <script>
+    // Done demonstrasyon sèlman.
+    // N ap ranplase yo ak done Supabase lè backend la pare.
+
+    const demoTransactions = [];
+
+    function displayDashboard() {
+      const total = demoTransactions.length;
+
+      const pending = demoTransactions.filter(
+        item => item.status === "Pending"
+      ).length;
+
+      const processing = demoTransactions.filter(
+        item => item.status === "Processing"
+      ).length;
+
+      const completed = demoTransactions.filter(
+        item => item.status === "Completed"
+      ).length;
+
+      document.getElementById("totalTransactions").textContent = total;
+      document.getElementById("pendingTransactions").textContent = pending;
+      document.getElementById("processingTransactions").textContent = processing;
+      document.getElementById("completedTransactions").textContent = completed;
+
+      const list = document.getElementById("transactionList");
+
+      if (total === 0) {
+        list.innerHTML = `
+          <tr>
+            <td colspan="5" class="empty-message">
+              Pa gen tranzaksyon pou montre pou kounye a.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      list.innerHTML = "";
+
+      demoTransactions.slice(0, 5).forEach(transaction => {
+        const row = document.createElement("tr");
+
+        const cells = [
+          transaction.number,
+          transaction.service,
+          transaction.amount,
+          transaction.date
+        ];
+
+        cells.forEach(value => {
+          const cell = document.createElement("td");
+          cell.textContent = value;
+          row.appendChild(cell);
+        });
+
+        const statusCell = document.createElement("td");
+        const status = document.createElement("span");
+
+        status.className = "status " +
+          transaction.status.toLowerCase();
+
+        status.textContent = transaction.status;
+        statusCell.appendChild(status);
+        row.appendChild(statusCell);
+
+        list.appendChild(row);
+      });
+    }
+
+    displayDashboard();
+  </script>
+
+</body>
+</html>
