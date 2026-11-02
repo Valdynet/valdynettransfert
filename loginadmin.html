@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Koneksyon administratè Valdynet Transfert.">
+  <title>Admin Login | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="../index.html" class="logo">Valdynet Transfert</a>
+      <p class="tagline">Sevis rapid</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-heading">
+      <h1>Espas Administratè</h1>
+      <p>Konekte pou jere demann transfè Valdynet Transfert yo.</p>
+    </section>
+
+    <section class="card">
+      <h2>Koneksyon Admin</h2>
+
+      <form id="admin-login-form">
+
+        <div class="form-group">
+          <label for="admin-email">Imèl administratè</label>
+          <input
+            type="email"
+            id="admin-email"
+            name="email"
+            placeholder="Admin email"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="admin-password">Modpas</label>
+          <input
+            type="password"
+            id="admin-password"
+            name="password"
+            placeholder="Antre modpas admin"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <p id="admin-login-message" role="status" aria-live="polite"></p>
+
+        <button type="submit" class="btn btn-primary">
+          Konekte kòm Admin
+        </button>
+
+      </form>
+
+      <p>
+        <a href="../index.html">Retounen nan paj prensipal la</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="current-year"></span> Valdynet Transfert. Tout dwa rezève.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+
+  <script>
+    document.getElementById("admin-login-form").addEventListener(
+      "submit",
+      function(event) {
+        event.preventDefault();
+
+        document.getElementById("admin-login-message").textContent =
+          "Koneksyon administratè a poko konekte ak sistèm sekirite a. Pa gen sesyon ki ouvri.";
+      }
+    );
+
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>
