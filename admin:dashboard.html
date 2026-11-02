@@ -1,195 +1,198 @@
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ht">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tableau de bord | Valdynet Transfert</title>
+  <meta name="description" content="Dashboard administratè Valdynet Transfert.">
+  <title>Admin Dashboard | Valdynet Transfert</title>
   <link rel="stylesheet" href="../assets/css/style.css">
-
-  <style>
-    .admin-page {
-      padding: 40px 6%;
-    }
-
-    .admin-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .admin-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      margin-bottom: 30px;
-    }
-
-    .stat-card {
-      background: white;
-      padding: 22px;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-    }
-
-    .stat-card h3 {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .stat-card p {
-      font-size: 27px;
-      font-weight: 800;
-      color: var(--red);
-    }
-
-    .table-container {
-      overflow-x: auto;
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-    }
-
-    .transaction-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 750px;
-    }
-
-    .transaction-table th,
-    .transaction-table td {
-      padding: 14px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      font-size: 14px;
-    }
-
-    .transaction-table th {
-      background: #f5f5f5;
-    }
-
-    .status {
-      font-weight: 700;
-    }
-
-    .admin-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .admin-actions button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .approve-button {
-      background: var(--yellow);
-    }
-
-    .complete-button {
-      background: #d9f2df;
-    }
-
-    .reject-button {
-      background: #f8d7da;
-    }
-
-    @media (max-width: 800px) {
-      .admin-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 450px) {
-      .admin-stats {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
 </head>
 <body>
 
   <header class="site-header">
-    <a href="../index.html" class="logo">Valdynet <span>Transfert</span></a>
-    <nav>
-      <a href="../index.html">Voir le site</a>
-      <a href="login.html">Déconnexion</a>
-    </nav>
+    <div class="container">
+      <a href="../index.html" class="logo">Valdynet Transfert</a>
+      <p class="tagline">Sevis rapid</p>
+
+      <nav class="admin-nav" aria-label="Meni administratè">
+        <a href="dashboard.html" aria-current="page">Dashboard</a>
+        <a href="transaction-details.html">Tranzaksyon</a>
+        <a href="settings.html">Paramèt finansye</a>
+        <a href="login.html">Koneksyon Admin</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="admin-page">
+  <main class="container">
 
-    <div class="admin-top">
-      <div>
-        <h1>Tableau de bord</h1>
-        <p>Gestion des demandes de transfert</p>
-      </div>
-    </div>
+    <section class="page-heading">
+      <h1>Dashboard Administratè</h1>
+      <p>Byenveni nan espas jesyon Valdynet Transfert.</p>
+    </section>
 
-    <section class="admin-stats">
-      <div class="stat-card">
-        <h3>Total des demandes</h3>
+    <section class="dashboard-summary">
+
+      <article class="card">
+        <h2>Total Demann</h2>
         <p id="total-count">0</p>
-      </div>
+      </article>
 
-      <div class="stat-card">
-        <h3>En attente</h3>
+      <article class="card">
+        <h2>Pending</h2>
         <p id="pending-count">0</p>
-      </div>
+      </article>
 
-      <div class="stat-card">
-        <h3>En traitement</h3>
+      <article class="card">
+        <h2>Processing</h2>
         <p id="processing-count">0</p>
+      </article>
+
+      <article class="card">
+        <h2>Completed</h2>
+        <p id="completed-count">0</p>
+      </article>
+
+    </section>
+
+    <section class="card">
+      <div class="section-heading">
+        <h2>Dènye Demann Transfè</h2>
+        <a href="transaction-details.html">Gade tranzaksyon yo</a>
       </div>
 
-      <div class="stat-card">
-        <h3>Terminées</h3>
-        <p id="completed-count">0</p>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Kliyan</th>
+              <th>Sèvis</th>
+              <th>Montan</th>
+              <th>Estati</th>
+              <th>Dat</th>
+            </tr>
+          </thead>
+
+          <tbody id="admin-transactions">
+            <tr>
+              <td colspan="6">
+                Pa gen demann pou montre pou kounye a.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <section class="table-container">
-      <h2>Demandes de transaction</h2>
+    <section class="card">
+      <h2>Jesyon Rapid</h2>
 
-      <table class="transaction-table">
-        <thead>
-          <tr>
-            <th>Transaction ID</th>
-            <th>Client</th>
-            <th>Service</th>
-            <th>Montant</th>
-            <th>Statut</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+      <div class="form-actions">
+        <a href="transaction-details.html" class="btn btn-primary">
+          Jere Tranzaksyon
+        </a>
 
-        <tbody id="transactions-list">
-          <tr>
-            <td colspan="6">
-              Les transactions apparaîtront ici après la connexion au serveur.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <a href="settings.html" class="btn btn-secondary">
+          Paramèt Finansye
+        </a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Estati Sistèm</h2>
+      <p>
+        <strong>Database:</strong>
+        <span id="database-status">Poko konekte</span>
+      </p>
+      <p>
+        <strong>Otantifikasyon Admin:</strong>
+        <span id="auth-status">Poko konekte</span>
+      </p>
+      <p>
+        <strong>Notifikasyon Imèl:</strong>
+        <span id="email-status">Poko aktive</span>
+      </p>
     </section>
 
   </main>
 
-  <footer>
-    <p>© <span id="current-year"></span> Valdynet Transfert.</p>
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="current-year"></span> Valdynet Transfert. Tout dwa rezève.</p>
+    </div>
   </footer>
 
+  <script src="../assets/js/app.js"></script>
+
   <script>
+    /*
+      Lis demonstrasyon an vid.
+      Lè backend la pare, n ap chaje done reyèl yo
+      atravè yon Netlify Function ki verifye dwa admin.
+    */
+
+    const demoTransactions = [];
+
+    function updateDashboard() {
+      const total = demoTransactions.length;
+
+      const pending = demoTransactions.filter(
+        item => item.status === "Pending"
+      ).length;
+
+      const processing = demoTransactions.filter(
+        item => item.status === "Processing"
+      ).length;
+
+      const completed = demoTransactions.filter(
+        item => item.status === "Completed"
+      ).length;
+
+      document.getElementById("total-count").textContent = total;
+      document.getElementById("pending-count").textContent = pending;
+      document.getElementById("processing-count").textContent = processing;
+      document.getElementById("completed-count").textContent = completed;
+
+      const table = document.getElementById("admin-transactions");
+      table.innerHTML = "";
+
+      if (total === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 6;
+        cell.textContent = "Pa gen demann pou montre pou kounye a.";
+
+        row.appendChild(cell);
+        table.appendChild(row);
+        return;
+      }
+
+      demoTransactions.slice(0, 10).forEach(function(item) {
+        const row = document.createElement("tr");
+
+        [
+          item.id,
+          item.customer,
+          item.service,
+          item.amount,
+          item.status,
+          item.date
+        ].forEach(function(value) {
+          const cell = document.createElement("td");
+          cell.textContent = value ?? "—";
+          row.appendChild(cell);
+        });
+
+        table.appendChild(row);
+      });
+    }
+
     document.getElementById("current-year").textContent =
       new Date().getFullYear();
+
+    updateDashboard();
   </script>
 
 </body>
