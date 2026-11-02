@@ -1,0 +1,366 @@
+
+/* =====================================
+   VALDYNET TRANSFERT
+   Main stylesheet
+===================================== */
+
+:root {
+  --red: #c62828;
+  --red-dark: #991b1b;
+  --yellow: #f4c542;
+  --white: #ffffff;
+  --background: #f7f7f7;
+  --text: #252525;
+  --muted: #666666;
+  --border: #e5e5e5;
+  --shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* HEADER */
+
+.site-header {
+  width: 100%;
+  min-height: 76px;
+  padding: 15px 7%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--red);
+  white-space: nowrap;
+}
+
+.logo span {
+  color: var(--text);
+}
+
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.site-header nav a {
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.site-header nav a:hover {
+  color: var(--red);
+}
+
+.login-link {
+  padding: 10px 18px;
+  border: 1px solid var(--red);
+  border-radius: 6px;
+  color: var(--red);
+}
+
+/* HERO */
+
+.hero {
+  min-height: 490px;
+  padding: 100px 8%;
+  background: linear-gradient(120deg, #8f1717, #c62828 65%, #e04b3f);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.eyebrow {
+  color: var(--yellow);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  max-width: 720px;
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1.12;
+  margin-bottom: 22px;
+}
+
+.hero p:not(.eyebrow) {
+  max-width: 600px;
+  font-size: 17px;
+  color: #f8eeee;
+  margin-bottom: 30px;
+}
+
+/* BUTTONS */
+
+.primary-button {
+  display: inline-block;
+  border: none;
+  border-radius: 7px;
+  padding: 14px 25px;
+  background: var(--yellow);
+  color: #252525;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.primary-button:hover {
+  background: #ffda65;
+  transform: translateY(-2px);
+}
+
+/* GENERAL SECTIONS */
+
+.services-section,
+.transaction-section,
+.contact-section {
+  padding: 75px 8%;
+}
+
+.services-section h2,
+.transaction-section h2,
+.contact-section h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.services-section > p,
+.transaction-section > p,
+.contact-section > p {
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+
+/* SERVICE CARDS */
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 30px;
+}
+
+.service-card {
+  background: var(--white);
+  padding: 28px;
+  border-radius: 10px;
+  border-bottom: 4px solid var(--red);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+.service-card h3 {
+  color: var(--red);
+  font-size: 21px;
+  margin-bottom: 12px;
+}
+
+.service-card p {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* TRANSACTION FORM */
+
+.transaction-section {
+  background: #eeeeee;
+}
+
+#transaction-form {
+  width: 100%;
+  max-width: 650px;
+  padding: 35px;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+#transaction-form label {
+  display: block;
+  margin: 18px 0 7px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#transaction-form input,
+#transaction-form select,
+#transaction-form textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#transaction-form input:focus,
+#transaction-form select:focus,
+#transaction-form textarea:focus {
+  border-color: var(--red);
+}
+
+#transaction-form textarea {
+  resize: vertical;
+}
+
+#transaction-form button {
+  width: 100%;
+  margin-top: 25px;
+}
+
+#form-message {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+/* CONTACT */
+
+.contact-section {
+  background: var(--white);
+  text-align: center;
+}
+
+/* FOOTER */
+
+footer {
+  padding: 25px 8%;
+  background: #202020;
+  color: #eeeeee;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ACCESSIBILITY */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .site-header {
+    padding: 15px 5%;
+    flex-direction: column;
+  }
+
+  .site-header nav {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    padding: 80px 6%;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .site-header {
+    position: relative;
+  }
+
+  .site-header nav {
+    gap: 12px;
+  }
+
+  .site-header nav a {
+    font-size: 13px;
+  }
+
+  .hero {
+    min-height: 400px;
+    padding: 65px 7%;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  .hero p:not(.eyebrow) {
+    font-size: 15px;
+  }
+
+  .services-section,
+  .transaction-section,
+  .contact-section {
+    padding: 55px 6%;
+  }
+
+  .services-section h2,
+  .transaction-section h2,
+  .contact-section h2 {
+    font-size: 27px;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #transaction-form {
+    padding: 22px;
+  }
+
+  .primary-button {
+    width: 100%;
+    text-align: center;
+  }
+}
