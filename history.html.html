@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Istwa Tranzaksyon | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    .history-container {
+      max-width: 1150px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+
+    .history-header {
+      margin-bottom: 25px;
+    }
+
+    .history-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .history-nav a {
+      text-decoration: none;
+      padding: 10px 15px;
+      background: #f2f2f2;
+      color: #222;
+      border-radius: 7px;
+    }
+
+    .history-nav a.active {
+      background: #d71920;
+      color: white;
+    }
+
+    .history-card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 3px 14px rgba(0,0,0,.07);
+    }
+
+    .history-filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .history-filters input,
+    .history-filters select {
+      padding: 11px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .history-table-wrapper {
+      overflow-x: auto;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    .history-table th,
+    .history-table td {
+      padding: 13px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .history-table th {
+      background: #f7f7f7;
+    }
+
+    .history-status {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .pending {
+      background: #fff1c7;
+      color: #805900;
+    }
+
+    .processing {
+      background: #dcecff;
+      color: #174d88;
+    }
+
+    .completed {
+      background: #d9f5df;
+      color: #17652a;
+    }
+
+    .cancelled,
+    .rejected {
+      background: #ffe0e0;
+      color: #9c1c1c;
+    }
+
+    .empty-history {
+      padding: 25px;
+      text-align: center;
+      color: #777;
+    }
+
+    .history-count {
+      margin-bottom: 15px;
+      color: #666;
+    }
+
+    @media(max-width: 600px) {
+      .history-container {
+        padding: 12px;
+      }
+
+      .history-card {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="history-container">
+
+  <header class="history-header">
+    <h1>Istwa tranzaksyon mwen</h1>
+    <p>Gade tout demann ou te fè nan Valdynet Transfert.</p>
+  </header>
+
+  <nav class="history-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="new-transfer.html">Nouvo tranzaksyon</a>
+    <a href="history.html" class="active">Istwa tranzaksyon</a>
+    <a href="profile.html">Pwofil mwen</a>
+  </nav>
+
+  <section class="history-card">
+
+    <div class="history-filters">
+
+      <input
+        type="search"
+        id="searchTransaction"
+        placeholder="Chèche nimewo tranzaksyon..."
+      >
+
+      <select id="filterStatus">
+        <option value="">Tout estati yo</option>
+        <option value="Pending">Pending</option>
+        <option value="Processing">Processing</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+
+    </div>
+
+    <p class="history-count" id="historyCount">
+      0 tranzaksyon
+    </p>
+
+    <div class="history-table-wrapper">
+
+      <table class="history-table">
+
+        <thead>
+          <tr>
+            <th>Nimewo tranzaksyon</th>
+            <th>Sèvis</th>
+            <th>Montan</th>
+            <th>Frè Valdynet</th>
+            <th>Dat</th>
+            <th>Estati</th>
+          </tr>
+        </thead>
+
+        <tbody id="historyList">
+          <tr>
+            <td colspan="6" class="empty-history">
+              Pa gen tranzaksyon pou montre pou kounye a.
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+  // Done demonstrasyon sèlman.
+  // N ap ranplase yo ak tranzaksyon kliyan ki nan Supabase.
+
+  const transactions = [];
+
+  const historyList = document.getElementById("historyList");
+  const searchInput = document.getElementById("searchTransaction");
+  const statusFilter = document.getElementById("filterStatus");
+
+  function formatStatus(status) {
+    return status.toLowerCase().replace(/\s+/g, "-");
+  }
+
+  function renderHistory() {
+    const search = searchInput.value.trim().toLowerCase();
+    const selectedStatus = statusFilter.value;
+
+    const filtered = transactions.filter(transaction => {
+      const matchesSearch = transaction.number
+        .toLowerCase()
+        .includes(search);
+
+      const matchesStatus = !selectedStatus ||
+        transaction.status === selectedStatus;
+
+      return matchesSearch && matchesStatus;
+    });
+
+    document.getElementById("historyCount").textContent =
+      `${filtered.length} tranzaksyon`;
+
+    historyList.innerHTML = "";
+
+    if (filtered.length === 0) {
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+
+      cell.colSpan = 6;
+      cell.className = "empty-history";
+      cell.textContent = "Pa gen tranzaksyon ki koresponn ak rechèch la.";
+
+      row.appendChild(cell);
+      historyList.appendChild(row);
+      return;
+    }
+
+    filtered.forEach(transaction => {
+      const row = document.createElement("tr");
+
+      const values = [
+        transaction.number,
+        transaction.service,
+        transaction.amount,
+        transaction.fee,
+        transaction.date
+      ];
+
+      values.forEach(value => {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.appendChild(cell);
+      });
+
+      const statusCell = document.createElement("td");
+      const badge = document.createElement("span");
+
+      badge.className =
+        `history-status ${formatStatus(transaction.status)}`;
+
+      badge.textContent = transaction.status;
+
+      statusCell.appendChild(badge);
+      row.appendChild(statusCell);
+
+      historyList.appendChild(row);
+    });
+  }
+
+  searchInput.addEventListener("input", renderHistory);
+  statusFilter.addEventListener("change", renderHistory);
+
+  renderHistory();
+</script>
+
+</body>
+</html>
