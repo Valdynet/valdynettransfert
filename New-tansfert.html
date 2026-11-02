@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouvo Tranzaksyon | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    .transfer-container {
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+
+    .transfer-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px rgba(0,0,0,.08);
+    }
+
+    .transfer-field {
+      margin: 18px 0;
+    }
+
+    .transfer-field label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .transfer-field input,
+    .transfer-field select,
+    .transfer-field textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      box-sizing: border-box;
+      font: inherit;
+    }
+
+    .transfer-summary {
+      background: #f7f7f7;
+      border-radius: 10px;
+      padding: 18px;
+      margin: 22px 0;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin: 12px 0;
+    }
+
+    .summary-line.total {
+      border-top: 1px solid #ccc;
+      padding-top: 14px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .transfer-button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 7px;
+      background: #d71920;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .transfer-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .transfer-message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .notice {
+      background: #fff5d9;
+      padding: 13px;
+      border-radius: 8px;
+      color: #624b13;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="transfer-container">
+
+  <h1>Nouvo tranzaksyon</h1>
+  <p>Ranpli enfòmasyon yo pou voye demann ou bay Valdynet Transfert.</p>
+
+  <nav style="display:flex;gap:10px;flex-wrap:wrap;margin:20px 0;">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="history.html">Istwa tranzaksyon</a>
+    <a href="profile.html">Pwofil mwen</a>
+  </nav>
+
+  <section class="transfer-card">
+
+    <form id="transferForm">
+
+      <div class="transfer-field">
+        <label for="service">Chwazi sèvis la</label>
+        <select id="service" required>
+          <option value="">-- Chwazi yon sèvis --</option>
+          <option value="deposit-paypal-local">Depo PayPal pa MonCash / NatCash</option>
+          <option value="withdraw-paypal-local">Retrè PayPal pa MonCash / NatCash</option>
+          <option value="deposit-wise-local">Depo Wise pa MonCash / NatCash</option>
+          <option value="withdraw-wise-local">Retrè Wise pa MonCash / NatCash</option>
+          <option value="deposit-wise-paypal">Depo Wise pa PayPal</option>
+          <option value="deposit-paypal-wise">Depo PayPal pa Wise</option>
+          <option value="withdraw-wise-paypal">Retrè Wise pa PayPal</option>
+          <option value="withdraw-paypal-wise">Retrè PayPal pa Wise</option>
+        </select>
+      </div>
+
+      <div class="transfer-field">
+        <label for="amount">Montan tranzaksyon an</label>
+        <input
+          id="amount"
+          type="number"
+          min="10"
+          step="0.01"
+          placeholder="Egzanp: 50"
+          required
+        >
+      </div>
+
+      <div class="transfer-field">
+        <label for="currency">Lajan ou antre a</label>
+        <select id="currency" required>
+          <option value="USD">USD - Dola ameriken</option>
+          <option value="HTG">HTG - Goud ayisyen</option>
+        </select>
+      </div>
+
+      <div class="transfer-field">
+        <label for="accountDetails">Enfòmasyon sou kont destinasyon an</label>
+        <textarea
+          id="accountDetails"
+          rows="3"
+          placeholder="Antre imèl oswa enfòmasyon kont ki nesesè pou sèvis la."
+          required
+        ></textarea>
+      </div>
+
+      <div class="transfer-field">
+        <label for="notes">Nòt (opsyonèl)</label>
+        <textarea
+          id="notes"
+          rows="3"
+          placeholder="Lòt enfòmasyon ou vle nou konnen..."
+        ></textarea>
+      </div>
+
+      <section class="transfer-summary">
+        <h3>Rezime montan an</h3>
+
+        <div class="summary-line">
+          <span>Montan orijinal</span>
+          <strong id="originalAmount">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>To echanj</span>
+          <strong id="exchangeRate">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Montan konvèti</span>
+          <strong id="convertedAmount">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Frè Valdynet</span>
+          <strong id="valdynetFee">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Frè founisè</span>
+          <strong>Ap konfime</strong>
+        </div>
+
+        <div class="summary-line total">
+          <span>Total anvan frè founisè</span>
+          <strong id="customerTotal">—</strong>
+        </div>
+
+        <p class="notice">
+          Frè founisè yo ka varye selon metòd peman an.
+          N ap konfime montan final la anvan nou trete demann lan.
+        </p>
+      </section>
+
+      <button type="submit" class="transfer-button" id="submitTransfer">
+        Voye demann mwen
+      </button>
+
+      <p id="transferMessage" class="transfer-message"></p>
+
+    </form>
+
+  </section>
+
+</main>
+
+<script>
+  const DEFAULT_SETTINGS = {
+    depositRate: 140,
+    withdrawRate: 130,
+    lowRate: 5,
+    highRate: 10,
+    threshold: 30,
+    minimum: 10
+  };
+
+  const serviceSelect = document.getElementById("service");
+  const amountInput = document.getElementById("amount");
+  const currencySelect = document.getElementById("currency");
+  const form = document.getElementById("transferForm");
+
+  function getSettings() {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("valdynetFinancialSettings") || "{}"
+      );
+
+      return { ...DEFAULT_SETTINGS, ...saved };
+    } catch {
+      return DEFAULT_SETTINGS;
+    }
+  }
+
+  function getOperation(service) {
+    return service.startsWith("deposit-") ? "deposit" : "withdraw";
+  }
+
+  function formatMoney(value, currency) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency
+    }).format(value);
+  }
+
+  function calculateSummary() {
+    const service = serviceSelect.value;
+    const amount = Number(amountInput.value);
+    const currency = currencySelect.value;
+
+    if (!service || !Number.isFinite(amount) || amount <= 0) {
+      return null;
+    }
+
+    const settings = getSettings();
+    const operation = getOperation(service);
+
+    const rate = operation === "deposit"
+      ? Number(settings.depositRate)
+      : Number(settings.withdrawRate);
+
+    if (!Number.isFinite(rate) || rate <= 0) {
+      return null;
+    }
+
+    const amountUSD = currency === "USD"
+      ? amount
+      : amount / rate;
+
+    if (amountUSD < settings.minimum) {
+      return {
+        error: `Montan minimòm lan se ${formatMoney(
+          settings.minimum, "USD"
+        )} oswa ekivalan li.`
+      };
+    }
+
+    const feeRate = amountUSD <= settings.threshold
+      ? settings.lowRate / 100
+      : settings.highRate / 100;
+
+    const feeUSD = Number((amountUSD * feeRate).toFixed(2));
+    const totalUSD = Number((amountUSD + feeUSD).toFixed(2));
+
+    const convertedHTG = Number((amountUSD * rate).toFixed(2));
+
+    return {
+      amountUSD,
+      feeUSD,
+      totalUSD,
+      convertedHTG,
+      rate,
+      operation,
+      currency
+    };
+  }
+
+  function updateSummary() {
+    const result = calculateSummary();
+
+    if (!result) {
+      document.getElementById("originalAmount").textContent = "—";
+      document.getElementById("exchangeRate").textContent = "—";
+      document.getElementById("convertedAmount").textContent = "—";
+      document.getElementById("valdynetFee").textContent = "—";
+      document.getElementById("customerTotal").textContent = "—";
+      return;
+    }
+
+    if (result.error) {
+      document.getElementById("originalAmount").textContent = "—";
+      document.getElementById("exchangeRate").textContent = "—";
+      document.getElementById("convertedAmount").textContent = "—";
+      document.getElementById("valdynetFee").textContent = "—";
+      document.getElementById("customerTotal").textContent = result.error;
+      return;
+    }
+
+    const original = Number(amountInput.value);
+    const currency = currencySelect.value;
+
+    document.getElementById("originalAmount").textContent =
+      formatMoney(original, currency);
+
+    document.getElementById("exchangeRate").textContent =
+      `1 USD = ${result.rate} HTG`;
+
+    document.getElementById("convertedAmount").textContent =
+      formatMoney(
+        currency === "USD" ? result.convertedHTG : result.amountUSD,
+        currency === "USD" ? "HTG" : "USD"
+      );
+
+    document.getElementById("valdynetFee").textContent =
+      formatMoney(result.feeUSD, "USD");
+
+    document.getElementById("customerTotal").textContent =
+      formatMoney(result.totalUSD, "USD");
+  }
+
+  [serviceSelect, amountInput, currencySelect].forEach(element => {
+    element.addEventListener("input", updateSummary);
+    element.addEventListener("change", updateSummary);
+  });
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const result = calculateSummary();
+    const message = document.getElementById("transferMessage");
+
+    if (!form.reportValidity()) return;
+
+    if (!result || result.error) {
+      message.textContent = result?.error || "Verifye enfòmasyon yo.";
+      return;
+    }
+
+    message.textContent =
+      "Fòm nan pare, men sistèm anrejistreman an poko konekte. " +
+      "Pa gen demann ki voye oswa anrejistre pou kounye a.";
+  });
+
+  updateSummary();
+</script>
+
+</body>
+</html>
