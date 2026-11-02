@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pwofil Kliyan | Valdynet Transfert</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    .profile-container {
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+
+    .profile-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .profile-nav a {
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 7px;
+      background: #f2f2f2;
+      color: #222;
+    }
+
+    .profile-nav a.active {
+      background: #d71920;
+      color: white;
+    }
+
+    .profile-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px rgba(0,0,0,.08);
+      margin-bottom: 25px;
+    }
+
+    .profile-field {
+      margin: 18px 0;
+    }
+
+    .profile-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .profile-field input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font: inherit;
+    }
+
+    .profile-field input:disabled {
+      background: #eee;
+      color: #666;
+    }
+
+    .profile-button {
+      padding: 13px 20px;
+      border: none;
+      border-radius: 7px;
+      background: #d71920;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .profile-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .profile-message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .profile-note {
+      color: #666;
+      font-size: 14px;
+    }
+
+    @media(max-width: 600px) {
+      .profile-container {
+        padding: 12px;
+      }
+
+      .profile-card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="profile-container">
+
+  <h1>Pwofil mwen</h1>
+  <p>Jere enfòmasyon pèsonèl kont Valdynet Transfert ou.</p>
+
+  <nav class="profile-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="new-transfer.html">Nouvo tranzaksyon</a>
+    <a href="history.html">Istwa tranzaksyon</a>
+    <a href="profile.html" class="active">Pwofil mwen</a>
+  </nav>
+
+  <section class="profile-card">
+    <h2>Enfòmasyon pèsonèl</h2>
+
+    <form id="profileForm">
+
+      <div class="profile-field">
+        <label for="fullName">Non konplè</label>
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Antre non konplè ou"
+          maxlength="100"
+          required
+        >
+      </div>
+
+      <div class="profile-field">
+        <label for="email">Adrès imèl</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="exemple@email.com"
+          disabled
+        >
+        <p class="profile-note">
+          Chanjman imèl ap fèt atravè sistèm sekirite kont lan.
+        </p>
+      </div>
+
+      <div class="profile-field">
+        <label for="phone">Nimewo telefòn</label>
+        <input
+          type="tel"
+          id="phone"
+          placeholder="+509XXXXXXXX"
+          maxlength="25"
+          required
+        >
+      </div>
+
+      <button type="submit" class="profile-button" id="saveProfile">
+        Anrejistre chanjman yo
+      </button>
+
+      <p id="profileMessage" class="profile-message"></p>
+
+    </form>
+  </section>
+
+  <section class="profile-card">
+    <h2>Sekirite kont</h2>
+    <p>Pou sekirite ou, chanjman modpas ap fèt atravè sistèm koneksyon an.</p>
+
+    <a href="../login.html" class="profile-button"
+       style="display:inline-block;text-decoration:none;">
+      Ale nan paj koneksyon
+    </a>
+  </section>
+
+</main>
+
+<script>
+  const profileForm = document.getElementById("profileForm");
+  const profileMessage = document.getElementById("profileMessage");
+
+  // Done demonstrasyon sèlman.
+  // N ap ranplase depo lokal sa a ak Supabase pita.
+
+  function loadProfile() {
+    let profile = {};
+
+    try {
+      profile = JSON.parse(
+        localStorage.getItem("valdynetDemoProfile") || "{}"
+      );
+    } catch {
+      profile = {};
+    }
+
+    document.getElementById("fullName").value =
+      profile.fullName || "";
+
+    document.getElementById("email").value =
+      profile.email || "";
+
+    document.getElementById("phone").value =
+      profile.phone || "";
+  }
+
+  profileForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if (!fullName || !phone) {
+      profileMessage.textContent =
+        "Tanpri ranpli tout chan obligatwa yo.";
+      return;
+    }
+
+    const profile = {
+      fullName,
+      email,
+      phone
+    };
+
+    localStorage.setItem(
+      "valdynetDemoProfile",
+      JSON.stringify(profile)
+    );
+
+    profileMessage.textContent =
+      "Enfòmasyon yo konsève sou navigatè sa a. Koneksyon ak kont reyèl la poko aktive.";
+  });
+
+  loadProfile();
+</script>
+
+</body>
+</html>
