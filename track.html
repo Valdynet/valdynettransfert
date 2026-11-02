@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Suivez votre transaction Valdynet Transfert.">
+  <title>Suivi de transaction | Valdynet Transfert</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="logo">Valdynet <span>Transfert</span></a>
+
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="index.html#services">Services</a>
+      <a href="login.html">Connexion</a>
+    </nav>
+  </header>
+
+  <main class="transaction-section">
+    <h2>Suivre une transaction</h2>
+    <p>Entrez votre numéro de transaction pour consulter son statut.</p>
+
+    <form id="track-form">
+      <label for="transactionId">Numéro de transaction</label>
+      <input
+        type="text"
+        id="transactionId"
+        name="transactionId"
+        placeholder="Exemple : VDT-2026-000001"
+        required
+      >
+
+      <button type="submit" class="primary-button">
+        Vérifier ma transaction
+      </button>
+
+      <p id="track-message" role="status"></p>
+    </form>
+
+    <div id="transaction-result" hidden>
+      <h3>Informations de la transaction</h3>
+      <p><strong>Transaction ID :</strong> <span id="result-id"></span></p>
+      <p><strong>Statut :</strong> <span id="result-status"></span></p>
+      <p id="result-details"></p>
+    </div>
+  </main>
+
+  <footer>
+    <p>© <span id="current-year"></span> Valdynet Transfert. Tous droits réservés.</p>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+
+    document.getElementById("track-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      document.getElementById("track-message").textContent =
+        "Le suivi sera disponible après la connexion à notre serveur.";
+
+      document.getElementById("transaction-result").hidden = true;
+    });
+  </script>
+
+</body>
+</html>
