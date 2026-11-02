@@ -4,378 +4,246 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nouvo Tranzaksyon | Valdynet Transfert</title>
+  <meta name="description" content="Kreye yon demann transfè sou Valdynet Transfert.">
+  <title>Nouvo Transfè | Valdynet Transfert</title>
   <link rel="stylesheet" href="../assets/css/style.css">
-
-  <style>
-    .transfer-container {
-      max-width: 850px;
-      margin: 35px auto;
-      padding: 20px;
-    }
-
-    .transfer-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 3px 14px rgba(0,0,0,.08);
-    }
-
-    .transfer-field {
-      margin: 18px 0;
-    }
-
-    .transfer-field label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-
-    .transfer-field input,
-    .transfer-field select,
-    .transfer-field textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      box-sizing: border-box;
-      font: inherit;
-    }
-
-    .transfer-summary {
-      background: #f7f7f7;
-      border-radius: 10px;
-      padding: 18px;
-      margin: 22px 0;
-    }
-
-    .summary-line {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      margin: 12px 0;
-    }
-
-    .summary-line.total {
-      border-top: 1px solid #ccc;
-      padding-top: 14px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .transfer-button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      border: 0;
-      border-radius: 7px;
-      background: #d71920;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .transfer-button:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .transfer-message {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    .notice {
-      background: #fff5d9;
-      padding: 13px;
-      border-radius: 8px;
-      color: #624b13;
-      font-size: 14px;
-    }
-  </style>
 </head>
-
 <body>
 
-<main class="transfer-container">
+  <header class="site-header">
+    <div class="container">
+      <a href="../index.html" class="logo">Valdynet Transfert</a>
+      <p class="tagline">Sevis rapid</p>
 
-  <h1>Nouvo tranzaksyon</h1>
-  <p>Ranpli enfòmasyon yo pou voye demann ou bay Valdynet Transfert.</p>
+      <nav class="customer-nav" aria-label="Meni kliyan">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="new-transfer.html" aria-current="page">Nouvo Transfè</a>
+        <a href="history.html">Istorik</a>
+        <a href="profile.html">Profil</a>
+        <a href="logout.html">Dekonekte</a>
+      </nav>
+    </div>
+  </header>
 
-  <nav style="display:flex;gap:10px;flex-wrap:wrap;margin:20px 0;">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="history.html">Istwa tranzaksyon</a>
-    <a href="profile.html">Pwofil mwen</a>
-  </nav>
+  <main class="container">
+    <section class="page-heading">
+      <h1>Nouvo Demann Transfè</h1>
+      <p>Ranpli enfòmasyon yo pou soumèt demann ou an.</p>
+    </section>
 
-  <section class="transfer-card">
+    <section class="card">
+      <form id="transfer-form">
 
-    <form id="transferForm">
-
-      <div class="transfer-field">
-        <label for="service">Chwazi sèvis la</label>
-        <select id="service" required>
-          <option value="">-- Chwazi yon sèvis --</option>
-          <option value="deposit-paypal-local">Depo PayPal pa MonCash / NatCash</option>
-          <option value="withdraw-paypal-local">Retrè PayPal pa MonCash / NatCash</option>
-          <option value="deposit-wise-local">Depo Wise pa MonCash / NatCash</option>
-          <option value="withdraw-wise-local">Retrè Wise pa MonCash / NatCash</option>
-          <option value="deposit-wise-paypal">Depo Wise pa PayPal</option>
-          <option value="deposit-paypal-wise">Depo PayPal pa Wise</option>
-          <option value="withdraw-wise-paypal">Retrè Wise pa PayPal</option>
-          <option value="withdraw-paypal-wise">Retrè PayPal pa Wise</option>
-        </select>
-      </div>
-
-      <div class="transfer-field">
-        <label for="amount">Montan tranzaksyon an</label>
-        <input
-          id="amount"
-          type="number"
-          min="10"
-          step="0.01"
-          placeholder="Egzanp: 50"
-          required
-        >
-      </div>
-
-      <div class="transfer-field">
-        <label for="currency">Lajan ou antre a</label>
-        <select id="currency" required>
-          <option value="USD">USD - Dola ameriken</option>
-          <option value="HTG">HTG - Goud ayisyen</option>
-        </select>
-      </div>
-
-      <div class="transfer-field">
-        <label for="accountDetails">Enfòmasyon sou kont destinasyon an</label>
-        <textarea
-          id="accountDetails"
-          rows="3"
-          placeholder="Antre imèl oswa enfòmasyon kont ki nesesè pou sèvis la."
-          required
-        ></textarea>
-      </div>
-
-      <div class="transfer-field">
-        <label for="notes">Nòt (opsyonèl)</label>
-        <textarea
-          id="notes"
-          rows="3"
-          placeholder="Lòt enfòmasyon ou vle nou konnen..."
-        ></textarea>
-      </div>
-
-      <section class="transfer-summary">
-        <h3>Rezime montan an</h3>
-
-        <div class="summary-line">
-          <span>Montan orijinal</span>
-          <strong id="originalAmount">—</strong>
+        <div class="form-group">
+          <label for="service">Chwazi sèvis la</label>
+          <select id="service" name="service" required>
+            <option value="">-- Chwazi yon sèvis --</option>
+            <option value="deposit-paypal-local">Depo PayPal pa MonCash / NatCash</option>
+            <option value="withdraw-paypal-local">Retrè PayPal pa MonCash / NatCash</option>
+            <option value="deposit-wise-local">Depo Wise pa MonCash / NatCash</option>
+            <option value="withdraw-wise-local">Retrè Wise pa MonCash / NatCash</option>
+            <option value="deposit-wise-paypal">Depo Wise pa PayPal</option>
+            <option value="deposit-paypal-wise">Depo PayPal pa Wise</option>
+            <option value="withdraw-wise-paypal">Retrè Wise pa PayPal</option>
+            <option value="withdraw-paypal-wise">Retrè PayPal pa Wise</option>
+          </select>
         </div>
 
-        <div class="summary-line">
-          <span>To echanj</span>
-          <strong id="exchangeRate">—</strong>
+        <div class="form-group">
+          <label for="amount">Montan</label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            min="0.01"
+            step="0.01"
+            placeholder="Antre montan an"
+            required
+          >
         </div>
 
-        <div class="summary-line">
-          <span>Montan konvèti</span>
-          <strong id="convertedAmount">—</strong>
+        <div class="form-group">
+          <label for="currency">Lajan</label>
+          <select id="currency" name="currency" required>
+            <option value="USD">USD - Dola ameriken</option>
+            <option value="HTG">HTG - Goud ayisyen</option>
+          </select>
         </div>
 
-        <div class="summary-line">
-          <span>Frè Valdynet</span>
-          <strong id="valdynetFee">—</strong>
+        <div class="form-group">
+          <label for="account-details">Enfòmasyon sou kont peman an</label>
+          <input
+            type="text"
+            id="account-details"
+            name="accountDetails"
+            placeholder="Imèl PayPal, Wise oswa nimewo MonCash/NatCash"
+            required
+          >
         </div>
 
-        <div class="summary-line">
-          <span>Frè founisè</span>
-          <strong>Ap konfime</strong>
+        <div class="form-group">
+          <label for="notes">Nòt anplis (opsyonèl)</label>
+          <textarea
+            id="notes"
+            name="notes"
+            rows="4"
+            placeholder="Ekri nenpòt detay ki ka ede nou trete demann lan."
+          ></textarea>
         </div>
 
-        <div class="summary-line total">
-          <span>Total anvan frè founisè</span>
-          <strong id="customerTotal">—</strong>
-        </div>
+        <section class="transfer-summary">
+          <h2>Rezime montan an</h2>
 
-        <p class="notice">
-          Frè founisè yo ka varye selon metòd peman an.
-          N ap konfime montan final la anvan nou trete demann lan.
-        </p>
-      </section>
+          <p>Montan orijinal: <strong id="original-amount">—</strong></p>
+          <p>To echanj: <strong id="exchange-rate">—</strong></p>
+          <p>Montan konvèti: <strong id="converted-amount">—</strong></p>
+          <p>Frè Valdynet: <strong id="service-fee">—</strong></p>
+          <p>Frè founisè: <strong id="provider-fee">Ap konfime</strong></p>
+          <p>Total anvan frè founisè: <strong id="total-amount">—</strong></p>
+        </section>
 
-      <button type="submit" class="transfer-button" id="submitTransfer">
-        Voye demann mwen
-      </button>
+        <p id="form-message" role="status" aria-live="polite"></p>
 
-      <p id="transferMessage" class="transfer-message"></p>
+        <button type="submit" class="btn btn-primary">
+          Soumèt Demann Transfè
+        </button>
 
-    </form>
+      </form>
+    </section>
+  </main>
 
-  </section>
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="current-year"></span> Valdynet Transfert. Tout dwa rezève.</p>
+    </div>
+  </footer>
 
-</main>
+  <script src="../assets/js/app.js"></script>
 
-<script>
-  const DEFAULT_SETTINGS = {
-    depositRate: 140,
-    withdrawRate: 130,
-    lowRate: 5,
-    highRate: 10,
-    threshold: 30,
-    minimum: 10
-  };
-
-  const serviceSelect = document.getElementById("service");
-  const amountInput = document.getElementById("amount");
-  const currencySelect = document.getElementById("currency");
-  const form = document.getElementById("transferForm");
-
-  function getSettings() {
-    try {
-      const saved = JSON.parse(
-        localStorage.getItem("valdynetFinancialSettings") || "{}"
-      );
-
-      return { ...DEFAULT_SETTINGS, ...saved };
-    } catch {
-      return DEFAULT_SETTINGS;
-    }
-  }
-
-  function getOperation(service) {
-    return service.startsWith("deposit-") ? "deposit" : "withdraw";
-  }
-
-  function formatMoney(value, currency) {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency
-    }).format(value);
-  }
-
-  function calculateSummary() {
-    const service = serviceSelect.value;
-    const amount = Number(amountInput.value);
-    const currency = currencySelect.value;
-
-    if (!service || !Number.isFinite(amount) || amount <= 0) {
-      return null;
-    }
-
-    const settings = getSettings();
-    const operation = getOperation(service);
-
-    const rate = operation === "deposit"
-      ? Number(settings.depositRate)
-      : Number(settings.withdrawRate);
-
-    if (!Number.isFinite(rate) || rate <= 0) {
-      return null;
-    }
-
-    const amountUSD = currency === "USD"
-      ? amount
-      : amount / rate;
-
-    if (amountUSD < settings.minimum) {
-      return {
-        error: `Montan minimòm lan se ${formatMoney(
-          settings.minimum, "USD"
-        )} oswa ekivalan li.`
-      };
-    }
-
-    const feeRate = amountUSD <= settings.threshold
-      ? settings.lowRate / 100
-      : settings.highRate / 100;
-
-    const feeUSD = Number((amountUSD * feeRate).toFixed(2));
-    const totalUSD = Number((amountUSD + feeUSD).toFixed(2));
-
-    const convertedHTG = Number((amountUSD * rate).toFixed(2));
-
-    return {
-      amountUSD,
-      feeUSD,
-      totalUSD,
-      convertedHTG,
-      rate,
-      operation,
-      currency
+  <script>
+    const DEFAULT_SETTINGS = {
+      depositRate: 140,
+      withdrawRate: 130,
+      lowRate: 5,
+      highRate: 10,
+      threshold: 30,
+      minimum: 10
     };
-  }
 
-  function updateSummary() {
-    const result = calculateSummary();
+    const form = document.getElementById("transfer-form");
+    const serviceInput = document.getElementById("service");
+    const amountInput = document.getElementById("amount");
+    const currencyInput = document.getElementById("currency");
+    const message = document.getElementById("form-message");
 
-    if (!result) {
-      document.getElementById("originalAmount").textContent = "—";
-      document.getElementById("exchangeRate").textContent = "—";
-      document.getElementById("convertedAmount").textContent = "—";
-      document.getElementById("valdynetFee").textContent = "—";
-      document.getElementById("customerTotal").textContent = "—";
-      return;
+    const money = (amount, currency) => {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: currency
+      }).format(amount);
+    };
+
+    function getSettings() {
+      try {
+        const saved = localStorage.getItem("valdynetFinancialSettings");
+        if (!saved) return DEFAULT_SETTINGS;
+
+        const parsed = JSON.parse(saved);
+        return { ...DEFAULT_SETTINGS, ...parsed };
+      } catch (error) {
+        return DEFAULT_SETTINGS;
+      }
     }
 
-    if (result.error) {
-      document.getElementById("originalAmount").textContent = "—";
-      document.getElementById("exchangeRate").textContent = "—";
-      document.getElementById("convertedAmount").textContent = "—";
-      document.getElementById("valdynetFee").textContent = "—";
-      document.getElementById("customerTotal").textContent = result.error;
-      return;
+    function calculateTransfer() {
+      const settings = getSettings();
+      const service = serviceInput.value;
+      const amount = Number(amountInput.value);
+      const currency = currencyInput.value;
+
+      if (!service || !Number.isFinite(amount) || amount <= 0) {
+        document.getElementById("original-amount").textContent = "—";
+        document.getElementById("exchange-rate").textContent = "—";
+        document.getElementById("converted-amount").textContent = "—";
+        document.getElementById("service-fee").textContent = "—";
+        document.getElementById("total-amount").textContent = "—";
+        return;
+      }
+
+      const isDeposit = service.startsWith("deposit-");
+      const rate = isDeposit ? settings.depositRate : settings.withdrawRate;
+
+      const amountUSD = currency === "USD" ? amount : amount / rate;
+      const convertedAmount = currency === "USD" ? amount * rate : amount / rate;
+
+      const feePercent = amountUSD <= settings.threshold
+        ? settings.lowRate
+        : settings.highRate;
+
+      const feeUSD = amountUSD * feePercent / 100;
+      const feeHTG = feeUSD * rate;
+
+      const totalUSD = amountUSD + feeUSD;
+      const totalHTG = amountUSD * rate + feeHTG;
+
+      document.getElementById("original-amount").textContent =
+        money(amount, currency);
+
+      document.getElementById("exchange-rate").textContent =
+        `1 USD = ${rate} HTG`;
+
+      document.getElementById("converted-amount").textContent =
+        currency === "USD"
+          ? money(convertedAmount, "HTG")
+          : money(convertedAmount, "USD");
+
+      document.getElementById("service-fee").textContent =
+        currency === "USD"
+          ? `${money(feeUSD, "USD")} / ${money(feeHTG, "HTG")}`
+          : `${money(feeHTG, "HTG")} / ${money(feeUSD, "USD")}`;
+
+      document.getElementById("total-amount").textContent =
+        currency === "USD"
+          ? money(totalUSD, "USD")
+          : money(totalHTG, "HTG");
+
+      message.textContent = "";
     }
 
-    const original = Number(amountInput.value);
-    const currency = currencySelect.value;
+    serviceInput.addEventListener("change", calculateTransfer);
+    amountInput.addEventListener("input", calculateTransfer);
+    currencyInput.addEventListener("change", calculateTransfer);
 
-    document.getElementById("originalAmount").textContent =
-      formatMoney(original, currency);
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
 
-    document.getElementById("exchangeRate").textContent =
-      `1 USD = ${result.rate} HTG`;
+      const settings = getSettings();
+      const amount = Number(amountInput.value);
+      const currency = currencyInput.value;
+      const service = serviceInput.value;
 
-    document.getElementById("convertedAmount").textContent =
-      formatMoney(
-        currency === "USD" ? result.convertedHTG : result.amountUSD,
-        currency === "USD" ? "HTG" : "USD"
-      );
+      if (!service || !Number.isFinite(amount) || amount <= 0) {
+        message.textContent = "Tanpri ranpli tout enfòmasyon obligatwa yo.";
+        return;
+      }
 
-    document.getElementById("valdynetFee").textContent =
-      formatMoney(result.feeUSD, "USD");
+      const isDeposit = service.startsWith("deposit-");
+      const rate = isDeposit ? settings.depositRate : settings.withdrawRate;
+      const amountUSD = currency === "USD" ? amount : amount / rate;
 
-    document.getElementById("customerTotal").textContent =
-      formatMoney(result.totalUSD, "USD");
-  }
+      if (amountUSD < settings.minimum) {
+        message.textContent =
+          `Montan minimòm lan se ${settings.minimum} USD oswa ekivalan li an HTG.`;
+        return;
+      }
 
-  [serviceSelect, amountInput, currencySelect].forEach(element => {
-    element.addEventListener("input", updateSummary);
-    element.addEventListener("change", updateSummary);
-  });
+      message.textContent =
+        "Fòm nan pare, men sistèm anrejistreman demann lan poko konekte. Pa gen demann ki te voye.";
+    });
 
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-
-    const result = calculateSummary();
-    const message = document.getElementById("transferMessage");
-
-    if (!form.reportValidity()) return;
-
-    if (!result || result.error) {
-      message.textContent = result?.error || "Verifye enfòmasyon yo.";
-      return;
-    }
-
-    message.textContent =
-      "Fòm nan pare, men sistèm anrejistreman an poko konekte. " +
-      "Pa gen demann ki voye oswa anrejistre pou kounye a.";
-  });
-
-  updateSummary();
-</script>
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+  </script>
 
 </body>
 </html>
