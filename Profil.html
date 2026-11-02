@@ -4,238 +4,196 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pwofil Kliyan | Valdynet Transfert</title>
+  <meta name="description" content="Jere enfòmasyon pwofil ou sou Valdynet Transfert.">
+  <title>Profil Mwen | Valdynet Transfert</title>
   <link rel="stylesheet" href="../assets/css/style.css">
-
-  <style>
-    .profile-container {
-      max-width: 850px;
-      margin: 35px auto;
-      padding: 20px;
-    }
-
-    .profile-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .profile-nav a {
-      text-decoration: none;
-      padding: 10px 15px;
-      border-radius: 7px;
-      background: #f2f2f2;
-      color: #222;
-    }
-
-    .profile-nav a.active {
-      background: #d71920;
-      color: white;
-    }
-
-    .profile-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 3px 14px rgba(0,0,0,.08);
-      margin-bottom: 25px;
-    }
-
-    .profile-field {
-      margin: 18px 0;
-    }
-
-    .profile-field label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .profile-field input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      font: inherit;
-    }
-
-    .profile-field input:disabled {
-      background: #eee;
-      color: #666;
-    }
-
-    .profile-button {
-      padding: 13px 20px;
-      border: none;
-      border-radius: 7px;
-      background: #d71920;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .profile-button:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .profile-message {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    .profile-note {
-      color: #666;
-      font-size: 14px;
-    }
-
-    @media(max-width: 600px) {
-      .profile-container {
-        padding: 12px;
-      }
-
-      .profile-card {
-        padding: 16px;
-      }
-    }
-  </style>
 </head>
-
 <body>
 
-<main class="profile-container">
+  <header class="site-header">
+    <div class="container">
+      <a href="../index.html" class="logo">Valdynet Transfert</a>
+      <p class="tagline">Sevis rapid</p>
 
-  <h1>Pwofil mwen</h1>
-  <p>Jere enfòmasyon pèsonèl kont Valdynet Transfert ou.</p>
+      <nav class="customer-nav" aria-label="Meni kliyan">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="new-transfer.html">Nouvo Transfè</a>
+        <a href="history.html">Istorik</a>
+        <a href="profile.html" aria-current="page">Profil</a>
+        <a href="logout.html">Dekonekte</a>
+      </nav>
+    </div>
+  </header>
 
-  <nav class="profile-nav">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="new-transfer.html">Nouvo tranzaksyon</a>
-    <a href="history.html">Istwa tranzaksyon</a>
-    <a href="profile.html" class="active">Pwofil mwen</a>
-  </nav>
+  <main class="container">
 
-  <section class="profile-card">
-    <h2>Enfòmasyon pèsonèl</h2>
+    <section class="page-heading">
+      <h1>Profil Mwen</h1>
+      <p>Enfòmasyon sou kont kliyan ou.</p>
+    </section>
 
-    <form id="profileForm">
+    <section class="card">
+      <h2>Enfòmasyon Pèsonèl</h2>
 
-      <div class="profile-field">
-        <label for="fullName">Non konplè</label>
-        <input
-          type="text"
-          id="fullName"
-          placeholder="Antre non konplè ou"
-          maxlength="100"
-          required
-        >
-      </div>
+      <form id="profile-form">
 
-      <div class="profile-field">
-        <label for="email">Adrès imèl</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="exemple@email.com"
-          disabled
-        >
-        <p class="profile-note">
-          Chanjman imèl ap fèt atravè sistèm sekirite kont lan.
-        </p>
-      </div>
+        <div class="form-group">
+          <label for="full-name">Non konplè</label>
+          <input
+            type="text"
+            id="full-name"
+            name="fullName"
+            placeholder="Antre non konplè ou"
+            autocomplete="name"
+            required
+          >
+        </div>
 
-      <div class="profile-field">
-        <label for="phone">Nimewo telefòn</label>
-        <input
-          type="tel"
-          id="phone"
-          placeholder="+509XXXXXXXX"
-          maxlength="25"
-          required
-        >
-      </div>
+        <div class="form-group">
+          <label for="email">Adrès imèl</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="exemple@email.com"
+            autocomplete="email"
+            required
+          >
+          <small>Imèl la ap konekte ak kont ou lè sistèm otantifikasyon an pare.</small>
+        </div>
 
-      <button type="submit" class="profile-button" id="saveProfile">
-        Anrejistre chanjman yo
-      </button>
+        <div class="form-group">
+          <label for="phone">Nimewo telefòn</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="+509..."
+            autocomplete="tel"
+            required
+          >
+        </div>
 
-      <p id="profileMessage" class="profile-message"></p>
+        <div class="form-group">
+          <label for="country">Peyi</label>
+          <input
+            type="text"
+            id="country"
+            name="country"
+            value="Haiti"
+            autocomplete="country-name"
+          >
+        </div>
 
-    </form>
-  </section>
+        <div class="form-group">
+          <label for="address">Adrès (opsyonèl)</label>
+          <textarea
+            id="address"
+            name="address"
+            rows="3"
+            placeholder="Antre adrès ou"
+            autocomplete="street-address"
+          ></textarea>
+        </div>
 
-  <section class="profile-card">
-    <h2>Sekirite kont</h2>
-    <p>Pou sekirite ou, chanjman modpas ap fèt atravè sistèm koneksyon an.</p>
+        <p id="profile-message" role="status" aria-live="polite"></p>
 
-    <a href="../login.html" class="profile-button"
-       style="display:inline-block;text-decoration:none;">
-      Ale nan paj koneksyon
-    </a>
-  </section>
+        <button type="submit" class="btn btn-primary">
+          Sove Enfòmasyon
+        </button>
 
-</main>
+      </form>
+    </section>
 
-<script>
-  const profileForm = document.getElementById("profileForm");
-  const profileMessage = document.getElementById("profileMessage");
+    <section class="card">
+      <h2>Sekirite Kont</h2>
+      <p>
+        Chanjman modpas ak verifikasyon imèl ap disponib lè nou konekte
+        sistèm Supabase Auth la.
+      </p>
+      <p><strong>Estati:</strong> Otantifikasyon poko konekte.</p>
+    </section>
 
-  // Done demonstrasyon sèlman.
-  // N ap ranplase depo lokal sa a ak Supabase pita.
+  </main>
 
-  function loadProfile() {
-    let profile = {};
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="current-year"></span> Valdynet Transfert. Tout dwa rezève.</p>
+    </div>
+  </footer>
 
-    try {
-      profile = JSON.parse(
-        localStorage.getItem("valdynetDemoProfile") || "{}"
-      );
-    } catch {
-      profile = {};
-    }
+  <script src="../assets/js/app.js"></script>
 
-    document.getElementById("fullName").value =
-      profile.fullName || "";
+  <script>
+    const PROFILE_KEY = "valdynetDemoProfile";
 
-    document.getElementById("email").value =
-      profile.email || "";
+    const profileForm = document.getElementById("profile-form");
+    const profileMessage = document.getElementById("profile-message");
 
-    document.getElementById("phone").value =
-      profile.phone || "";
-  }
-
-  profileForm.addEventListener("submit", event => {
-    event.preventDefault();
-
-    const fullName = document.getElementById("fullName").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-
-    if (!fullName || !phone) {
-      profileMessage.textContent =
-        "Tanpri ranpli tout chan obligatwa yo.";
-      return;
-    }
-
-    const profile = {
-      fullName,
-      email,
-      phone
+    const fields = {
+      fullName: document.getElementById("full-name"),
+      email: document.getElementById("email"),
+      phone: document.getElementById("phone"),
+      country: document.getElementById("country"),
+      address: document.getElementById("address")
     };
 
-    localStorage.setItem(
-      "valdynetDemoProfile",
-      JSON.stringify(profile)
-    );
+    function loadProfile() {
+      try {
+        const savedProfile = localStorage.getItem(PROFILE_KEY);
 
-    profileMessage.textContent =
-      "Enfòmasyon yo konsève sou navigatè sa a. Koneksyon ak kont reyèl la poko aktive.";
-  });
+        if (!savedProfile) return;
 
-  loadProfile();
-</script>
+        const profile = JSON.parse(savedProfile);
+
+        fields.fullName.value = profile.fullName || "";
+        fields.email.value = profile.email || "";
+        fields.phone.value = profile.phone || "";
+        fields.country.value = profile.country || "Haiti";
+        fields.address.value = profile.address || "";
+      } catch (error) {
+        profileMessage.textContent =
+          "Nou pa t kapab chaje enfòmasyon pwofil demonstrasyon an.";
+      }
+    }
+
+    profileForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const profile = {
+        fullName: fields.fullName.value.trim(),
+        email: fields.email.value.trim(),
+        phone: fields.phone.value.trim(),
+        country: fields.country.value.trim(),
+        address: fields.address.value.trim()
+      };
+
+      if (
+        !profile.fullName ||
+        !profile.email ||
+        !profile.phone
+      ) {
+        profileMessage.textContent =
+          "Tanpri ranpli non, imèl ak nimewo telefòn ou.";
+        return;
+      }
+
+      try {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+
+        profileMessage.textContent =
+          "Enfòmasyon demonstrasyon yo sove nan navigatè sa a. Yo poko anrejistre sou sèvè a.";
+      } catch (error) {
+        profileMessage.textContent =
+          "Nou pa t kapab sove enfòmasyon yo nan navigatè a.";
+      }
+    });
+
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+
+    loadProfile();
+  </script>
 
 </body>
 </html>
