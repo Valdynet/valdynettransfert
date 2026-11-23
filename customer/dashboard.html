@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tableau de bord – Valdynet Transfert</title>
+<meta name="description" content="Vos transactions et votre profil Valdynet Transfert.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="/index.html">Valdynet Transfert<small>Sevis rapid</small></a>
+  <button class="btn" id="logout" type="button">Se déconnecter</button>
+</div></header>
+<main class="wrap dash" id="main">
+  <h1 id="welcome">Bienvenue</h1>
+  <div class="cards" role="group" aria-label="Résumé de vos transactions">
+    <div class="card"><p>Transactions</p><strong id="c-total">–</strong></div>
+    <div class="card"><p>En cours</p><strong id="c-pending">–</strong></div>
+    <div class="card"><p>Terminées</p><strong id="c-done">–</strong></div>
+    <div class="card"><p>Annulées</p><strong id="c-cancel">–</strong></div>
+  </div>
+  <section>
+    <div class="head"><h2>Mes transactions</h2><span class="badge">Nouveau transfert : bientôt</span></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Identifiant</th><th>Date</th><th>Service</th><th>Paiement</th><th>Montant</th><th>Devise</th><th>Frais</th><th>Statut</th></tr></thead>
+      <tbody id="tx-body"><tr><td colspan="8">Chargement…</td></tr></tbody>
+    </table></div>
+  </section>
+  <div class="two">
+    <section class="card"><h2>Mon profil</h2>
+      <form id="f-profile" novalidate>
+        <label><span>E-mail</span><input id="p-email" readonly></label>
+        <label><span>Prénom</span><input name="first" data-rule="required"><small class="err"></small></label>
+        <label><span>Nom</span><input name="last" data-rule="required"><small class="err"></small></label>
+        <label><span>Téléphone</span><input name="phone" type="tel" data-rule="required"><small class="err"></small></label>
+        <label><span>Pays</span><input name="country"><small class="err"></small></label>
+        <p><button class="btn" type="submit">Enregistrer</button></p><p class="note" role="status"></p>
+      </form></section>
+    <section class="card"><h2>Changer le mot de passe</h2>
+      <form id="f-pass" novalidate>
+        <label><span>Nouveau mot de passe</span><input name="password" type="password" autocomplete="new-password" data-rule="password"><small class="err"></small></label>
+        <label><span>Confirmer</span><input name="confirm" type="password" autocomplete="new-password" data-rule="match"><small class="err"></small></label>
+        <p><button class="btn" type="submit">Changer le mot de passe</button></p><p class="note" role="status"></p>
+      </form></section>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/dashboard.js"></script>
+</body>
+</html>
