@@ -3,15 +3,15 @@
 Plateforme de transfert d’argent (USD ↔ HTG) de **Valdynet Freelancer LLC**.
 Stack : HTML/CSS/JavaScript vanilla, Netlify + Netlify Functions, Supabase (PostgreSQL, Auth, RLS), PayPal REST API.
 
-> **État : Phase 1 sur 6. Ce projet n’est pas prêt pour la production.**
-> Aucun paiement, aucun compte et aucune base de données ne sont encore actifs.
+> **État : Phase 2 sur 6. Ce projet n’est pas prêt pour la production.**
+> Les migrations SQL, l’authentification et le tableau de bord client sont écrits mais **non testés** ; aucun paiement n’est actif.
 
 ## Avancement
 
 | Phase | Contenu | État |
 |---|---|---|
 | 1 | Design, page d’accueil, calculateur, service financier central | Livré (non testé automatiquement) |
-| 2 | Supabase Auth, schéma SQL, RLS, tableau de bord client | À faire |
+| 2 | Supabase Auth, schéma SQL, RLS, tableau de bord client | Livré (non testé) |
 | 3 | Création de transaction, historique, suivi public | À faire |
 | 4 | Tableau de bord admin, paramètres financiers, journaux d’audit | À faire |
 | 5 | PayPal Sandbox, flux manuels Wise / MonCash / NatCash | À faire |
@@ -21,10 +21,16 @@ Stack : HTML/CSS/JavaScript vanilla, Netlify + Netlify Functions, Supabase (Post
 
 ```text
 valdynet-transfert/
-├── index.html                      Accueil + calculateur + connexion/inscription (interface)
+├── index.html                      Accueil + calculateur + connexion/inscription
+├── forgot-password.html            Réinitialisation du mot de passe
+├── customer/dashboard.html         Tableau de bord client (protégé)
+├── database/migrations/            001_schema.sql, 002_rls.sql
 ├── assets/css/style.css
 ├── assets/js/calculator.js         Affichage uniquement, appelle /api/calculate
-├── assets/js/app.js                Langue FR/HT, onglets, validation côté navigateur
+├── assets/js/app.js                Langue FR/HT, onglets
+├── assets/js/auth.js               Supabase Auth, validation, garde de session
+├── assets/js/dashboard.js          Tableau de bord client
+├── netlify/functions/config.js     Expose URL + clé anon (publiques) depuis les variables Netlify
 ├── netlify/functions/calculate.js  POST /api/calculate
 ├── netlify/functions/_lib/finance.js   Service financier central (seule source des calculs)
 ├── netlify.toml                    Redirection /api/*, en-têtes de sécurité
@@ -48,7 +54,18 @@ Ouvrir `index.html` directement ne fonctionne pas : le calculateur a besoin de l
 1. Créer un dépôt GitHub et y pousser le projet.
 2. Netlify → *Add new site* → *Import from Git*.
 3. Paramètres : *Publish directory* `.`, *Functions directory* `netlify/functions`, aucune commande de build.
-4. Phase 1 n’exige aucune variable d’environnement. Les suivantes seront ajoutées dans *Site configuration → Environment variables* (jamais dans le code).
+4. Ajouter `SUPABASE_URL` et `SUPABASE_ANON_KEY` dans *Site configuration → Environment variables* (jamais dans le code). La clé `service_role` n’est pas utilisée avant la Phase 3 et ne doit jamais être mise dans le frontend.
+
+## Configurer Supabase (Phase 2)
+
+1. Créer un projet Supabase. Copier l’URL du projet et la clé **anon** dans les variables Netlify (et dans `.env` pour `netlify dev`).
+2. SQL Editor : exécuter `database/migrations/001_schema.sql`, puis `002_rls.sql`.
+3. Authentication → Providers → Email : activer **Confirm email** ; longueur minimale du mot de passe : 8.
+4. Authentication → URL Configuration : définir *Site URL* (votre domaine Netlify) et ajouter `/index.html` et `/forgot-password.html` aux *Redirect URLs*.
+5. Premier administrateur : créer le compte via le site, confirmer l’e-mail, puis exécuter dans le SQL Editor la requête en commentaire à la fin de `002_rls.sql`. Le rôle ne peut pas être modifié depuis le navigateur (accès en écriture retiré sur `profiles.role`).
+6. Tester avec deux comptes clients : chacun ne doit voir que ses propres données.
+
+Limites actuelles : la page admin n’existe pas encore (Phase 4), les transactions sont créées par le backend en Phase 3, et la garde de session des pages client est un confort d’usage : la vraie protection des données est la RLS. Le script Supabase est chargé depuis jsDelivr en version fixe, sans empreinte SRI : l’héberger vous-même est préférable avant la production.
 
 ## Politique de calcul financier (par défaut)
 
@@ -80,13 +97,13 @@ Cochée = en place dans le code actuel. Non cochée = à faire.
 - [x] Calculs côté serveur (le navigateur n’est qu’un affichage)
 - [x] Limite de taille et validation d’entrée sur `/api/calculate`
 - [x] Sorties écrites avec `textContent` (pas d’injection HTML)
-- [ ] Supabase Auth, vérification d’e-mail, réinitialisation du mot de passe
+- [x] Supabase Auth, réinitialisation du mot de passe (écrits, à tester) ; vérification d’e-mail à activer dans Supabase
 - [ ] Rôle admin vérifié côté serveur
-- [ ] Row Level Security sur toutes les tables
+- [x] Row Level Security sur toutes les tables, écriture client retirée (migrations écrites, à exécuter et tester)
 - [ ] Limitation de débit (rate limiting) et clés d’idempotence
 - [ ] Vérification serveur des paiements PayPal et signature des webhooks
 - [ ] Protection du suivi public contre l’énumération
-- [ ] Journaux d’audit en ajout seul
+- [x] Tables de journaux en ajout seul (déclencheurs) ; alimentation des journaux en Phases 3–4
 - [ ] Restrictions d’envoi de fichiers (preuves de paiement)
 - [ ] Tests de sécurité et de non-régression
 

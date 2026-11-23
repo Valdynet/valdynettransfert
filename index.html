@@ -21,7 +21,7 @@
     <a href="#fees" data-i18n="nav.fees">Frais</a>
     <a href="#contact" data-i18n="nav.contact">Contact</a>
   </nav>
-  <label class="sr" style="margin:0"><span style="position:absolute;left:-999px">Langue</span>
+  <label class="lang"><span class="sr">Langue</span>
     <select id="lang" aria-label="Langue"><option value="fr">Français</option><option value="ht">Kreyòl ayisyen</option></select></label>
   <a class="btn" href="#auth" data-i18n="nav.account">Espace client</a>
 </div></header>
@@ -106,7 +106,7 @@
     </div>
     <div role="tabpanel" id="panel-up" aria-labelledby="tab-up" hidden>
       <form data-auth novalidate>
-        <div class="row" style="grid-template-columns:1fr 1fr">
+        <div class="row row2">
           <label><span>Prénom</span><input name="first" autocomplete="given-name" data-rule="required"><small class="err"></small></label>
           <label><span>Nom</span><input name="last" autocomplete="family-name" data-rule="required"><small class="err"></small></label>
         </div>
@@ -130,6 +130,8 @@
 </main>
 
 <footer><div class="wrap">© Valdynet Freelancer LLC · Valdynet Transfert</div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" defer></script>
+<script src="assets/js/auth.js" defer></script>
 <script src="assets/js/calculator.js" defer></script>
 <script src="assets/js/app.js" defer></script>
 </body>
