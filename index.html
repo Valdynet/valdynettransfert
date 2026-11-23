@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Valdynet Transfert – Sevis rapid</title>
+<meta name="description" content="Dépôts et retraits entre USD et HTG avec PayPal, Wise, MonCash et NatCash. Calculez vos frais avant de payer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="#top">Valdynet Transfert<small>Sevis rapid</small></a>
+  <nav aria-label="Navigation principale">
+    <a href="#top" data-i18n="nav.home">Accueil</a>
+    <a href="#services" data-i18n="nav.services">Services</a>
+    <a href="#how" data-i18n="nav.how">Comment ça marche</a>
+    <a href="#fees" data-i18n="nav.fees">Frais</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
+  </nav>
+  <label class="sr" style="margin:0"><span style="position:absolute;left:-999px">Langue</span>
+    <select id="lang" aria-label="Langue"><option value="fr">Français</option><option value="ht">Kreyòl ayisyen</option></select></label>
+  <a class="btn" href="#auth" data-i18n="nav.account">Espace client</a>
+</div></header>
+
+<main id="main">
+<section class="hero" id="top"><div class="wrap">
+  <div>
+    <h1>Sevis rapid</h1>
+    <p class="lead" data-i18n="hero.sub">Envoyez, recevez et changez USD et HTG simplement, avec les frais affichés avant de payer.</p>
+  </div>
+  <form id="calc" class="card" novalidate>
+    <h2 data-i18n="calc.title">Calculez votre transfert</h2>
+    <label><span data-i18n="calc.service">Service</span>
+      <select id="service" name="service">
+        <option value="deposit">Dépôt</option>
+        <option value="withdrawal">Retrait</option>
+        <option value="wallet_transfer" disabled>Transfert portefeuille à portefeuille (bientôt)</option>
+        <option value="international" disabled>Transfert international (bientôt)</option>
+      </select></label>
+    <label><span data-i18n="calc.method">Moyen de paiement</span>
+      <select id="method" name="method">
+        <option value="paypal">PayPal (USD)</option><option value="wise">Wise (USD)</option>
+        <option value="moncash">MonCash (HTG)</option><option value="natcash">NatCash (HTG)</option>
+      </select></label>
+    <div class="row">
+      <label><span data-i18n="calc.amount">Montant</span><input id="amount" name="amount" type="number" inputmode="decimal" min="0" step="0.01" value="50"></label>
+      <label><span data-i18n="calc.currency">Devise</span><input id="currency" value="USD" readonly aria-readonly="true"></label>
+    </div>
+    <p id="calc-error" class="error" role="alert" hidden></p>
+    <dl id="result" aria-live="polite">
+      <div><dt data-i18n="r.amount">Montant initial</dt><dd id="r-amount">–</dd></div>
+      <div><dt data-i18n="r.rate">Taux de change</dt><dd id="r-rate">–</dd></div>
+      <div><dt data-i18n="r.conv">Montant converti</dt><dd id="r-conv">–</dd></div>
+      <div><dt data-i18n="r.fee">Frais Valdynet</dt><dd id="r-fee">–</dd></div>
+      <div><dt data-i18n="r.pfee">Frais du fournisseur</dt><dd id="r-pfee">–</dd></div>
+      <div class="total"><dt data-i18n="r.total">Total à payer</dt><dd id="r-total">–</dd></div>
+      <div class="total"><dt data-i18n="r.recv">Le destinataire reçoit</dt><dd id="r-recv">–</dd></div>
+    </dl>
+  </form>
+</div></section>
+
+<section id="services"><div class="wrap">
+  <h2 data-i18n="nav.services">Services</h2>
+  <div class="grid">
+    <article class="card"><h3>Dépôt</h3><p>Convertissez et déposez avec PayPal, Wise, MonCash ou NatCash.</p></article>
+    <article class="card"><h3>Retrait</h3><p>Retirez vos fonds au taux de retrait en vigueur.</p></article>
+    <article class="card"><h3>Portefeuille à portefeuille <span class="badge">Bientôt</span></h3><p>Disponible quand l’itinéraire et le taux seront configurés.</p></article>
+    <article class="card"><h3>International <span class="badge">Bientôt</span></h3><p>Disponible quand l’itinéraire et le taux seront configurés.</p></article>
+  </div>
+</div></section>
+
+<section class="alt" id="how"><div class="wrap">
+  <h2 data-i18n="nav.how">Comment ça marche</h2>
+  <ol class="steps">
+    <li><strong>Calculez.</strong> Choisissez le service, le moyen de paiement et le montant : le détail s’affiche tout de suite.</li>
+    <li><strong>Payez.</strong> PayPal est confirmé automatiquement. Wise, MonCash et NatCash sont vérifiés manuellement par notre équipe.</li>
+    <li><strong>Suivez.</strong> Votre transaction reçoit un identifiant unique et un statut à jour.</li>
+  </ol>
+</div></section>
+
+<section id="fees"><div class="wrap">
+  <h2 data-i18n="nav.fees">Frais</h2>
+  <p>Frais Valdynet : 5 % pour les transactions de 10 $ à 30 $ inclus, 10 % au-dessus de 30 $, appliqués au montant complet. Minimum : 10 $ ou l’équivalent en HTG.</p>
+  <p>Les frais des fournisseurs (PayPal, Wise, MonCash, NatCash) sont distincts et restent <strong>À confirmer</strong> tant qu’ils ne sont pas configurés.</p>
+</div></section>
+
+<section class="alt" id="auth"><div class="wrap auth">
+  <h2 data-i18n="nav.account">Espace client</h2>
+  <div class="card">
+    <div role="tablist" aria-label="Connexion ou inscription">
+      <button role="tab" id="tab-in" aria-selected="true" aria-controls="panel-in" data-i18n="auth.in">Se connecter</button>
+      <button role="tab" id="tab-up" aria-selected="false" aria-controls="panel-up" tabindex="-1" data-i18n="auth.up">Créer un compte</button>
+    </div>
+    <div role="tabpanel" id="panel-in" aria-labelledby="tab-in">
+      <form data-auth novalidate>
+        <label><span>E-mail</span><input name="email" type="email" autocomplete="email" data-rule="email"><small class="err"></small></label>
+        <label><span>Mot de passe</span><input name="password" type="password" autocomplete="current-password" data-rule="required"><small class="err"></small></label>
+        <label class="check"><input type="checkbox" name="remember"> Se souvenir de moi</label>
+        <p><button class="btn" type="submit">Se connecter</button> <a href="forgot-password.html">Mot de passe oublié ?</a></p>
+        <p class="note" role="status"></p>
+      </form>
+    </div>
+    <div role="tabpanel" id="panel-up" aria-labelledby="tab-up" hidden>
+      <form data-auth novalidate>
+        <div class="row" style="grid-template-columns:1fr 1fr">
+          <label><span>Prénom</span><input name="first" autocomplete="given-name" data-rule="required"><small class="err"></small></label>
+          <label><span>Nom</span><input name="last" autocomplete="family-name" data-rule="required"><small class="err"></small></label>
+        </div>
+        <label><span>E-mail</span><input name="email" type="email" autocomplete="email" data-rule="email"><small class="err"></small></label>
+        <label><span>Téléphone</span><input name="phone" type="tel" autocomplete="tel" data-rule="required"><small class="err"></small></label>
+        <label><span>Pays</span><select name="country" data-rule="required"><option value="">Choisir…</option><option>Haïti</option><option>États-Unis</option><option>Canada</option><option>France</option><option>République dominicaine</option><option>Autre</option></select><small class="err"></small></label>
+        <label><span>Mot de passe</span><input name="password" type="password" autocomplete="new-password" data-rule="password"><small class="err"></small></label>
+        <label><span>Confirmer le mot de passe</span><input name="confirm" type="password" autocomplete="new-password" data-rule="match"><small class="err"></small></label>
+        <label class="check"><input type="checkbox" name="terms" data-rule="checked"> J’accepte les conditions d’utilisation<small class="err"></small></label>
+        <p><button class="btn" type="submit">Créer mon compte</button></p>
+        <p class="note" role="status"></p>
+      </form>
+    </div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <h2 data-i18n="nav.contact">Contact</h2>
+  <p>Les coordonnées de Valdynet Freelancer LLC seront ajoutées avec la configuration de l’entreprise.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">© Valdynet Freelancer LLC · Valdynet Transfert</div></footer>
+<script src="assets/js/calculator.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>
