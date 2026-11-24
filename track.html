@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suivi de transaction – Valdynet Transfert</title>
+<meta name="description" content="Suivez l’état de votre transaction avec son identifiant.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap"><a class="brand" href="index.html">Valdynet Transfert<small>Sevis rapid</small></a></div></header>
+<main class="wrap auth page" id="main">
+  <div class="card">
+    <h1>Suivi de transaction</h1>
+    <form id="f-track" novalidate>
+      <label><span>Identifiant (ex. VT-XXXXXXXXXX)</span><input name="reference" maxlength="20" autocomplete="off"><small class="err"></small></label>
+      <p><button class="btn" type="submit">Suivre</button></p>
+      <p class="note" role="status"></p>
+    </form>
+    <dl id="t-out" hidden>
+      <div><dt>Identifiant</dt><dd id="t-ref"></dd></div>
+      <div><dt>Créée le</dt><dd id="t-date"></dd></div>
+      <div><dt>Service</dt><dd id="t-service"></dd></div>
+      <div><dt>Montant</dt><dd id="t-amount"></dd></div>
+      <div><dt>Statut</dt><dd id="t-status"></dd></div>
+      <div><dt>Dernière mise à jour</dt><dd id="t-upd"></dd></div>
+    </dl>
+    <p>Les détails privés sont disponibles dans votre <a href="customer/dashboard.html">espace client</a>.</p>
+  </div>
+</main>
+<script src="assets/js/track.js"></script>
+</body>
+</html>
