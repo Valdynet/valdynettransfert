@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nouveau transfert – Valdynet Transfert</title>
+<meta name="description" content="Créez un transfert Valdynet Transfert avec récapitulatif des frais.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="/index.html">Valdynet Transfert<small>Sevis rapid</small></a>
+  <a class="btn" href="/customer/dashboard.html">Tableau de bord</a>
+</div></header>
+<main class="wrap auth page" id="main">
+  <form id="calc" class="card" novalidate>
+    <h1>Nouveau transfert</h1>
+    <label><span>Nom</span><input name="fullname" readonly></label>
+    <div class="row row2">
+      <label><span>E-mail</span><input name="email" readonly></label>
+      <label><span>Téléphone</span><input name="phone" readonly></label>
+    </div>
+    <label><span>Service</span>
+      <select id="service"><option value="deposit">Dépôt</option><option value="withdrawal">Retrait</option>
+        <option value="wallet_transfer" disabled>Portefeuille à portefeuille (bientôt)</option>
+        <option value="international" disabled>International (bientôt)</option></select></label>
+    <label><span>Moyen de paiement</span>
+      <select id="method"><option value="paypal">PayPal (USD)</option><option value="wise">Wise (USD)</option>
+        <option value="moncash">MonCash (HTG)</option><option value="natcash">NatCash (HTG)</option></select></label>
+    <div class="row">
+      <label><span>Montant</span><input id="amount" type="number" inputmode="decimal" min="0" step="0.01" value="50"></label>
+      <label><span>Devise</span><input id="currency" value="USD" readonly></label>
+    </div>
+    <label><span>Nom du destinataire</span><input name="rname" maxlength="120" data-rule="required"><small class="err"></small></label>
+    <label><span>Contact du destinataire (téléphone ou e-mail)</span><input name="rcontact" maxlength="120" data-rule="required"><small class="err"></small></label>
+    <label><span>Notes (facultatif)</span><input name="notes" maxlength="500"></label>
+    <p id="calc-error" class="error" role="alert" hidden></p>
+    <dl id="result" aria-live="polite">
+      <div><dt>Montant initial</dt><dd id="r-amount">–</dd></div>
+      <div><dt>Taux de change</dt><dd id="r-rate">–</dd></div>
+      <div><dt>Montant converti</dt><dd id="r-conv">–</dd></div>
+      <div><dt>Frais Valdynet</dt><dd id="r-fee">–</dd></div>
+      <div><dt>Frais du fournisseur</dt><dd id="r-pfee">–</dd></div>
+      <div class="total"><dt>Total à payer</dt><dd id="r-total">–</dd></div>
+      <div class="total"><dt>Le destinataire reçoit</dt><dd id="r-recv">–</dd></div>
+    </dl>
+    <label class="check"><input type="checkbox" name="confirm" data-rule="checked"> Je confirme avoir vérifié ce récapitulatif<small class="err"></small></label>
+    <p><button class="btn" type="submit">Créer la transaction</button></p>
+    <p class="note" id="tx-note" role="status"></p>
+  </form>
+  <div id="done" class="card" hidden>
+    <h1>Transaction créée</h1>
+    <p>Votre identifiant de suivi : <strong id="ref"></strong></p>
+    <p>Statut : en attente. L’activation du paiement (PayPal et paiements manuels) arrive à la phase suivante ; conservez cet identifiant.</p>
+    <p><a class="btn" href="/customer/dashboard.html">Voir mes transactions</a> <a href="/track.html">Suivre une transaction</a></p>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/calculator.js"></script>
+<script src="/assets/js/transfer.js"></script>
+</body>
+</html>
