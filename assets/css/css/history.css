@@ -1,0 +1,5 @@
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:16px 0}
+.filters label{margin:0;min-width:200px}
+.filters .btn{margin-bottom:0}
+dialog{border:1px solid var(--line);border-radius:10px;max-width:520px;width:92%;padding:24px;color:var(--ink)}
+dialog::backdrop{background:rgba(11,37,69,.55)}
