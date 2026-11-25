@@ -1,0 +1,6 @@
+.tabs{margin:16px 0}
+.tabs [role=tab]{flex:0 1 auto;padding:10px 16px}
+.panel{margin-top:8px}
+.fees{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.checks{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0 0 14px}
+.admin-note{color:var(--muted);font-size:.9rem}
