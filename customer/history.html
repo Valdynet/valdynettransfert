@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Historique – Valdynet Transfert</title>
+<meta name="description" content="Historique complet de vos transactions Valdynet Transfert.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+<link rel="stylesheet" href="/assets/css/history.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="/index.html">Valdynet Transfert<small>Sevis rapid</small></a>
+  <a class="btn" href="/customer/dashboard.html">Tableau de bord</a>
+  <a class="btn" href="/customer/new-transfer.html">Nouveau transfert</a>
+</div></header>
+<main class="wrap dash" id="main">
+  <h1>Historique des transactions</h1>
+  <form id="f-filter" class="filters" novalidate>
+    <label><span>Identifiant</span><input name="q" maxlength="20" autocomplete="off" placeholder="VT-…"></label>
+    <label><span>Statut</span>
+      <select name="status"><option value="">Tous</option>
+        <option value="pending">En attente</option><option value="pending_verification">Vérification en cours</option>
+        <option value="payment_received">Paiement reçu</option><option value="processing">En traitement</option>
+        <option value="completed">Terminée</option><option value="cancelled">Annulée</option>
+        <option value="rejected">Rejetée</option><option value="refunded">Remboursée</option></select></label>
+    <button class="btn" type="submit">Filtrer</button>
+  </form>
+  <div class="scroll"><table>
+    <thead><tr><th>Identifiant</th><th>Date</th><th>Service</th><th>Paiement</th><th>Montant</th><th>Frais</th><th>Statut</th><th>Détails</th></tr></thead>
+    <tbody id="h-body"></tbody>
+  </table></div>
+  <p class="error" id="h-note" role="alert" hidden></p>
+  <p><button class="btn" id="more" type="button" hidden>Charger plus</button></p>
+</main>
+<dialog id="detail" aria-labelledby="d-title">
+  <form method="dialog"><h2 id="d-title">Détails de la transaction</h2><dl id="d-list"></dl><button class="btn">Fermer</button></form>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/history.js"></script>
+</body>
+</html>
