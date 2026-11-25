@@ -1,1 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Administration – Valdynet Transfert</title>
+<meta name="description" content="Administration Valdynet Transfert.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+<link rel="stylesheet" href="/assets/css/history.css">
+<link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="/admin/dashboard.html">Valdynet Transfert<small>Administration</small></a>
+  <span id="who"></span>
+  <button class="btn" id="logout" type="button">Se déconnecter</button>
+</div></header>
+<main class="wrap dash" id="main">
+  <h1>Administration</h1>
+  <div role="tablist" class="tabs" aria-label="Sections">
+    <button role="tab" id="t-overview" aria-selected="true" aria-controls="p-overview" data-load="overview">Aperçu</button>
+    <button role="tab" id="t-transactions" aria-selected="false" aria-controls="p-transactions" data-load="transactions" tabindex="-1">Transactions</button>
+    <button role="tab" id="t-customers" aria-selected="false" aria-controls="p-customers" data-load="customers" tabindex="-1">Clients</button>
+    <button role="tab" id="t-settings" aria-selected="false" aria-controls="p-settings" data-load="settings" tabindex="-1">Paramètres financiers</button>
+    <button role="tab" id="t-logs" aria-selected="false" aria-controls="p-logs" data-load="logs" tabindex="-1">Journaux</button>
+  </div>
 
+  <section id="p-overview" class="panel" role="tabpanel" aria-labelledby="t-overview">
+    <div class="cards" id="o-cards"></div>
+    <p class="admin-note">Paiements et paramètres de paiement (Wise, MonCash, NatCash) arrivent avec la Phase 5.</p>
+  </section>
+
+  <section id="p-transactions" class="panel" role="tabpanel" aria-labelledby="t-transactions" hidden>
+    <form id="f-tx" class="filters" novalidate>
+      <label><span>Identifiant</span><input name="q" maxlength="20" autocomplete="off"></label>
+      <label><span>Statut</span><select name="status" id="f-status"><option value="">Tous</option></select></label>
+      <label><span>Paiement</span><select name="method"><option value="">Tous</option><option value="paypal">PayPal</option><option value="wise">Wise</option><option value="moncash">MonCash</option><option value="natcash">NatCash</option></select></label>
+      <label><span>Du</span><input name="from" type="date"></label>
+      <label><span>Au</span><input name="to" type="date"></label>
+      <button class="btn" type="submit">Filtrer</button>
+    </form>
+    <div class="scroll"><table>
+      <thead><tr><th>Identifiant</th><th>Date</th><th>Client</th><th>Service</th><th>Paiement</th><th>Montant</th><th>Statut</th><th>Gérer</th></tr></thead>
+      <tbody id="tx-body"></tbody>
+    </table></div>
+    <p class="error" id="tx-err" role="alert" hidden></p>
+    <p><button class="btn" id="tx-more" type="button" hidden>Charger plus</button></p>
+  </section>
+
+  <section id="p-customers" class="panel" role="tabpanel" aria-labelledby="t-customers" hidden>
+    <div class="scroll"><table>
+      <thead><tr><th>E-mail</th><th>Nom</th><th>Téléphone</th><th>Pays</th><th>Statut</th><th>Inscrit le</th></tr></thead>
+      <tbody id="c-body"></tbody>
+    </table></div>
+  </section>
+
+  <section id="p-settings" class="panel" role="tabpanel" aria-labelledby="t-settings" hidden>
+    <form id="f-settings" class="card" novalidate>
+      <div class="row row2">
+        <label><span>Taux dépôt (HTG pour 1 USD)</span><input name="deposit_rate" type="number" step="0.0001" min="1"></label>
+        <label><span>Taux retrait (HTG pour 1 USD)</span><input name="withdrawal_rate" type="number" step="0.0001" min="1"></label>
+        <label><span>Montant minimum (USD)</span><input name="minimum_amount" type="number" step="0.01" min="1"></label>
+        <label><span>Seuil des frais (USD)</span><input name="fee_threshold" type="number" step="0.01" min="1"></label>
+        <label><span>Frais jusqu’au seuil (ex. 0.05 = 5 %)</span><input name="low_fee_rate" type="number" step="0.0001" min="0" max="1"></label>
+        <label><span>Frais au-dessus du seuil (ex. 0.10 = 10 %)</span><input name="high_fee_rate" type="number" step="0.0001" min="0" max="1"></label>
+      </div>
+      <h2>Frais des fournisseurs (montant fixe, devise du moyen de paiement)</h2>
+      <p class="admin-note">Laisser vide = « À confirmer ».</p>
+      <div class="fees">
+        <label><span>PayPal (USD)</span><input name="pf_paypal" type="number" step="0.01" min="0"></label>
+        <label><span>Wise (USD)</span><input name="pf_wise" type="number" step="0.01" min="0"></label>
+        <label><span>MonCash (HTG)</span><input name="pf_moncash" type="number" step="0.01" min="0"></label>
+        <label><span>NatCash (HTG)</span><input name="pf_natcash" type="number" step="0.01" min="0"></label>
+      </div>
+      <h2>Services disponibles</h2>
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="sv_deposit"> Dépôt</label>
+        <label class="check"><input type="checkbox" name="sv_withdrawal"> Retrait</label>
+        <label class="check"><input type="checkbox" name="sv_wallet_transfer"> Portefeuille à portefeuille</label>
+        <label class="check"><input type="checkbox" name="sv_international"> International</label>
+      </div>
+      <h2>Moyens de paiement disponibles</h2>
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="mt_paypal"> PayPal</label>
+        <label class="check"><input type="checkbox" name="mt_wise"> Wise</label>
+        <label class="check"><input type="checkbox" name="mt_moncash"> MonCash</label>
+        <label class="check"><input type="checkbox" name="mt_natcash"> NatCash</label>
+      </div>
+      <p class="admin-note">Les transactions existantes gardent le taux et les frais utilisés à leur création. Un changement peut prendre jusqu’à 30 secondes pour s’appliquer partout.</p>
+      <p><button class="btn" type="submit">Enregistrer</button></p>
+      <p class="note" id="s-note" role="status"></p>
+    </form>
+  </section>
+
+  <section id="p-logs" class="panel" role="tabpanel" aria-labelledby="t-logs" hidden>
+    <h2>Journal d’audit</h2>
+    <div class="scroll"><table><thead><tr><th>Date</th><th>Action</th><th>Entité</th><th>Détails</th></tr></thead><tbody id="l-audit"></tbody></table></div>
+    <h2>Statuts de transactions</h2>
+    <div class="scroll"><table><thead><tr><th>Date</th><th>Transaction</th><th>Changement</th><th>Note</th></tr></thead><tbody id="l-tx"></tbody></table></div>
+  </section>
+</main>
+
+<dialog id="tx-dialog" aria-labelledby="d-title">
+  <h2 id="d-title">Transaction</h2>
+  <dl id="t-list"></dl>
+  <form id="s-form" novalidate>
+    <label><span>Nouveau statut</span><select id="s-status"></select></label>
+    <label><span>Note (obligatoire pour rejeter, annuler ou rembourser)</span><input id="s-note" maxlength="500"></label>
+    <p class="error" id="s-msg" role="alert"></p>
+    <button class="btn" type="submit">Appliquer</button>
+  </form>
+  <p id="s-none" hidden>Aucun changement de statut possible.</p>
+  <p><button class="btn" id="d-close" type="button">Fermer</button></p>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/admin.js"></script>
+</body>
+</html>
