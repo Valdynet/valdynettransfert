@@ -3,7 +3,7 @@
 Plateforme de transfert d’argent (USD ↔ HTG) de **Valdynet Freelancer LLC**.
 Stack : HTML/CSS/JavaScript vanilla, Netlify + Netlify Functions, Supabase (PostgreSQL, Auth, RLS), PayPal REST API.
 
-> **État : Phase 3 sur 6. Ce projet n’est pas prêt pour la production.**
+> **État : Phase 5 sur 6. Ce projet n’est pas prêt pour la production.**
 > Les migrations SQL, l’authentification et le tableau de bord client sont écrits mais **non testés** ; aucun paiement n’est actif.
 
 ## Avancement
@@ -12,9 +12,9 @@ Stack : HTML/CSS/JavaScript vanilla, Netlify + Netlify Functions, Supabase (Post
 |---|---|---|
 | 1 | Design, page d’accueil, calculateur, service financier central | Livré (non testé automatiquement) |
 | 2 | Supabase Auth, schéma SQL, RLS, tableau de bord client | Livré (non testé) |
-| 3 | Création de transaction, suivi public (historique : tableau du dashboard) | Livré (non testé) |
-| 4 | Tableau de bord admin, paramètres financiers, journaux d’audit | À faire |
-| 5 | PayPal Sandbox, flux manuels Wise / MonCash / NatCash | À faire |
+| 3 | Création de transaction, historique, suivi public | Livré (calculateur testé ; reste non testé) |
+| 4 | Tableau de bord admin, paramètres financiers, journaux d’audit | Livré (non testé) |
+| 5 | PayPal Sandbox, flux manuels Wise / MonCash / NatCash, paiements admin | Livré, **non vérifié** (voir « Phase 5 » ci-dessous) |
 | 6 | E-mails, WhatsApp, tests de sécurité, guide de déploiement | À faire |
 
 ## Structure actuelle
@@ -26,7 +26,7 @@ valdynet-transfert/
 ├── customer/dashboard.html         Tableau de bord client (protégé)
 ├── track.html                      Suivi public
 ├── customer/new-transfer.html      Nouveau transfert
-├── database/migrations/            001_schema.sql, 002_rls.sql, 003_transactions.sql
+├── database/migrations/            001_schema.sql … 005_payments.sql
 ├── package.json                    Dépendance des fonctions (@supabase/supabase-js)
 ├── assets/css/style.css
 ├── assets/js/calculator.js         Affichage uniquement, appelle /api/calculate
@@ -36,6 +36,13 @@ valdynet-transfert/
 ├── netlify/functions/config.js     Expose URL + clé anon (publiques) depuis les variables Netlify
 ├── netlify/functions/create-transaction.js   Création sécurisée (auth, taux limité, idempotence)
 ├── netlify/functions/track.js      Suivi public (limité, réponses génériques)
+├── netlify/functions/admin.js      API admin (rôle vérifié en base à chaque appel)
+├── admin/dashboard.html            Administration : aperçu, transactions, clients, paramètres, journaux
+├── admin/payments.html             Paiements : validation manuelle, preuves, instructions de paiement
+├── customer/pay.html               Page de paiement client (PayPal ou formulaire manuel)
+├── netlify/functions/paypal-create-order.js, paypal-capture-order.js, paypal-webhook.js
+├── netlify/functions/manual-payment.js, admin-payments.js
+├── netlify/functions/_lib/paypal.js, payments.js, adminAuth.js
 ├── netlify/functions/_lib/         finance, settings (taux depuis Supabase), common (client service role)
 ├── netlify/functions/calculate.js  POST /api/calculate
 ├── netlify/functions/_lib/finance.js   Service financier central (seule source des calculs)
@@ -70,9 +77,48 @@ Ouvrir `index.html` directement ne fonctionne pas : le calculateur a besoin de l
 4. Authentication → URL Configuration : définir *Site URL* (votre domaine Netlify) et ajouter `/index.html` et `/forgot-password.html` aux *Redirect URLs*.
 5. Premier administrateur : créer le compte via le site, confirmer l’e-mail, puis exécuter dans le SQL Editor la requête en commentaire à la fin de `002_rls.sql`. Le rôle ne peut pas être modifié depuis le navigateur (accès en écriture retiré sur `profiles.role`).
 6. Phase 3 : exécuter aussi `003_transactions.sql`. Les taux et frais du calculateur viennent désormais de la table `financial_settings`.
-7. Tester avec deux comptes clients : chacun ne doit voir que ses propres données.
+7. Phase 4 : exécuter aussi `004_admin.sql`, puis donner le rôle admin à votre compte (requête en commentaire dans `002_rls.sql`). À la connexion, un administrateur est redirigé vers `/admin/dashboard.html`.
+8. Tester avec deux comptes clients : chacun ne doit voir que ses propres données.
+
+Administration : la page `admin/dashboard.html` est un fichier statique sans données ; toutes les données passent par `/api/admin`, qui relit le rôle dans la base à chaque appel (un client reçoit 403). Les changements de statut suivent la table de transitions de `allowed_transitions()` (004), à valider avec le propriétaire : cette table est la seule source. Les frais fournisseurs sont des montants fixes (devise du moyen de paiement) ; vides, ils restent « À confirmer ». Wise/MonCash/NatCash (instructions de paiement, vérification manuelle) et la page « Paiements » arrivent en Phase 5.
 
 Limites actuelles : la page admin n’existe pas encore (Phase 4), les transactions sont créées par le backend en Phase 3, et la garde de session des pages client est un confort d’usage : la vraie protection des données est la RLS. Le script Supabase est chargé depuis jsDelivr en version fixe, sans empreinte SRI : l’héberger vous-même est préférable avant la production.
+
+## Phase 5 : paiements
+
+### Configuration (en privé, jamais dans le code ni dans une conversation)
+1. Supabase → SQL Editor : exécuter `database/migrations/005_payments.sql` (crée aussi le bucket privé `payment-proofs`).
+2. Netlify → *Site configuration → Environment variables → Add a variable*. Cocher *Contains secret values* pour les secrets, portée *Functions* :
+   - `PAYPAL_MODE` = `sandbox` (valeur `live` seulement après tous les tests)
+   - `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` : *developer.paypal.com → Apps & Credentials → Sandbox → votre app*
+   - `PAYPAL_WEBHOOK_ID` : voir l’étape 3
+   - `SUPABASE_SERVICE_ROLE_KEY` doit déjà être définie (Phase 3)
+3. PayPal Developer → votre app Sandbox → *Webhooks → Add webhook* : URL `https://VOTRE-SITE.netlify.app/api/paypal-webhook`, événements `PAYMENT.CAPTURE.COMPLETED`, `.PENDING`, `.DENIED`, `.DECLINED`, `.REFUNDED`, `.REVERSED` et `CHECKOUT.PAYMENT-APPROVAL.REVERSED`. Copier le *Webhook ID* dans `PAYPAL_WEBHOOK_ID`.
+4. Redéployer le site après chaque changement de variable (*Deploys → Trigger deploy*).
+5. Admin → *Paiements* : saisir les instructions Wise et vérifier les numéros MonCash/NatCash.
+6. Passage en Live (plus tard) : nouvelle app **Live** chez PayPal, nouveaux Client ID/Secret/Webhook ID, puis `PAYPAL_MODE=live`. Aucun changement de code.
+
+### Fonctionnement
+- PayPal : la commande est créée côté serveur avec le montant lu en base. La capture n’est enregistrée qu’après comparaison de la réponse de PayPal (montant, devise, propriétaire) avec la base. Les index uniques et les fonctions SQL idempotentes empêchent la double capture et le double traitement. Le webhook est vérifié par l’API PayPal et chaque événement n’est traité qu’une fois.
+- Wise / MonCash / NatCash : le client soumet identifiant de transaction, référence et preuve facultative (JPG/PNG/PDF, 5 Mo, bucket privé, lien admin de 60 s). Statut « Vérification en cours » jusqu’à décision d’un admin. Un identifiant de transaction fournisseur ne peut servir qu’une fois (insensible à la casse).
+- Chaque approbation, rejet et changement d’instructions est écrit dans `audit_logs`.
+
+### Tests
+`node --test tests/finance.test.js tests/payments.test.js tests/payment-handlers.test.js` : 33 tests automatiques (calculateur, validation PayPal, signature webhook, double capture, paiement échoué/en attente, doublon webhook, références manuelles, autorisation admin, accès à la transaction d’un autre client). Ils utilisent une base et un PayPal simulés. **Ils ne remplacent pas** les essais réels ci-dessous.
+
+| À vérifier en vrai (Sandbox + Supabase) | Attendu |
+|---|---|
+| Payer avec un compte acheteur Sandbox | Transaction « Paiement reçu » |
+| Annuler dans la fenêtre PayPal | Message d’annulation, transaction toujours « En attente » |
+| Carte refusée (compte Sandbox de test) | Paiement non enregistré |
+| *Webhooks simulator* PayPal (COMPLETED, REFUNDED, DENIED) | Événement accepté, statut mis à jour ; un 2e envoi est ignoré |
+| Webhook avec mauvaise signature (curl) | HTTP 400 |
+| Paiement manuel soumis | « Vérification en cours », jamais payé automatiquement |
+| Admin approuve / rejette (rejet sans note) | Statut mis à jour / refus sans note |
+| Même ID MonCash soumis deux fois | Refusé |
+| Client A ouvre `pay.html?ref=` du client B | « Transaction introuvable » |
+| Client appelle `/api/admin-payments` | HTTP 403 |
+| Lire `payment-proofs` avec la clé anon | Refusé |
 
 ## Politique de calcul financier (par défaut)
 
@@ -93,7 +139,7 @@ Retourne le détail du calcul, ou `{ "ok": false, "error": "CODE" }` (`SERVICE_U
 
 ## Tests
 
-Aucun test automatisé pour l’instant. Prévus : calculateur (taux, minimum, seuils de frais), puis authentification, isolation des données, paiements et suivi, au fil des phases. Les paiements PayPal se testeront uniquement en Sandbox.
+Calculateur : `node --test tests/finance.test.js` (Node 18+, aucun paquet à installer). Les autres tests sont à écrire. Prévus : calculateur (taux, minimum, seuils de frais), puis authentification, isolation des données, paiements et suivi, au fil des phases. Les paiements PayPal se testeront uniquement en Sandbox.
 
 ## Liste de contrôle de sécurité
 
@@ -105,13 +151,13 @@ Cochée = en place dans le code actuel. Non cochée = à faire.
 - [x] Limite de taille et validation d’entrée sur `/api/calculate`
 - [x] Sorties écrites avec `textContent` (pas d’injection HTML)
 - [x] Supabase Auth, réinitialisation du mot de passe (écrits, à tester) ; vérification d’e-mail à activer dans Supabase
-- [ ] Rôle admin vérifié côté serveur
+- [x] Rôle admin vérifié côté serveur à chaque appel `/api/admin` (écrit, à tester)
 - [x] Row Level Security sur toutes les tables, écriture client retirée (migrations écrites, à exécuter et tester)
 - [x] Limitation de débit (création et suivi) et idempotence des transactions (écrits, à tester) ; idempotence des paiements en Phase 5
-- [ ] Vérification serveur des paiements PayPal et signature des webhooks
+- [x] Vérification serveur des paiements PayPal et signature des webhooks (écrit, testé avec simulation ; à vérifier en Sandbox)
 - [x] Suivi public : référence non devinable, limitation de débit, réponses génériques (écrit, à tester)
 - [x] Tables de journaux en ajout seul (déclencheurs) ; alimentation des journaux en Phases 3–4
-- [ ] Restrictions d’envoi de fichiers (preuves de paiement)
+- [x] Preuves de paiement : bucket privé, types et taille limités, accès par lien signé de 60 s (écrit, à vérifier)
 - [ ] Tests de sécurité et de non-régression
 
 Ne pas affirmer de conformité PCI DSS ni d’approbation réglementaire sans validation indépendante. Un service de transfert d’argent peut exiger enregistrement ou licence, ainsi que des procédures KYC/AML : à vérifier avec un professionnel avant d’augmenter les volumes.
