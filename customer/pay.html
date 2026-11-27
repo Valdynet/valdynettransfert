@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paiement – Valdynet Transfert</title>
+<meta name="description" content="Payez votre transaction Valdynet Transfert.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="/index.html">Valdynet Transfert<small>Sevis rapid</small></a>
+  <a class="btn" href="/customer/dashboard.html">Tableau de bord</a>
+</div></header>
+<main class="wrap auth page" id="main">
+  <div class="card">
+    <h1>Paiement</h1>
+    <p class="error" id="pay-err" role="alert" hidden></p>
+    <dl id="p-sum"></dl>
+    <p class="note" id="p-status" role="status" hidden></p>
+    <div id="paypal-box" hidden><div id="paypal-buttons"></div></div>
+    <form id="f-manual" hidden novalidate>
+      <div id="m-instr"></div>
+      <label><span>Identifiant de la transaction (Transaction ID)</span><input name="txid" maxlength="64" autocomplete="off" data-rule="required"><small class="err"></small></label>
+      <label><span>Référence de paiement</span><input name="payref" maxlength="64" autocomplete="off" data-rule="required"><small class="err"></small></label>
+      <label><span>Preuve de paiement (facultatif : JPG, PNG ou PDF, 5 Mo max)</span><input name="proof" type="file" accept="image/jpeg,image/png,application/pdf"><small class="err"></small></label>
+      <p><button class="btn" type="submit">Envoyer pour vérification</button></p>
+      <p class="note" id="m-note" role="status"></p>
+    </form>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/pay.js"></script>
+</body>
+</html>
