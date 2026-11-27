@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paiements – Administration Valdynet Transfert</title>
+<meta name="description" content="Gestion des paiements Valdynet Transfert.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+<link rel="stylesheet" href="/assets/css/history.css">
+<link rel="stylesheet" href="/assets/css/payments.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="/admin/dashboard.html">Valdynet Transfert<small>Administration</small></a>
+  <a class="btn" href="/admin/dashboard.html">Tableau de bord</a>
+  <button class="btn" id="logout" type="button">Se déconnecter</button>
+</div></header>
+<main class="wrap dash" id="main">
+  <h1>Paiements</h1>
+  <form id="f-pay" class="filters" novalidate>
+    <label><span>Moyen</span><select name="method"><option value="">Tous</option><option value="paypal">PayPal</option><option value="wise">Wise</option><option value="moncash">MonCash</option><option value="natcash">NatCash</option></select></label>
+    <label><span>Statut</span><select name="status"><option value="">Tous</option><option value="pending_verification">Vérification en cours</option><option value="pending">En attente</option><option value="completed">Validé</option><option value="failed">Rejeté / échoué</option><option value="cancelled">Annulé</option><option value="refunded">Remboursé</option></select></label>
+    <button class="btn" type="submit">Filtrer</button>
+  </form>
+  <div class="scroll"><table>
+    <thead><tr><th>Date</th><th>Transaction</th><th>Client</th><th>Moyen</th><th>ID fournisseur</th><th>Référence</th><th>Montant</th><th>Statut</th><th>Gérer</th></tr></thead>
+    <tbody id="p-body"></tbody>
+  </table></div>
+  <p class="error" id="p-err" role="alert" hidden></p>
+  <p><button class="btn" id="p-more" type="button" hidden>Charger plus</button></p>
+
+  <section class="card pset">
+    <h2>Instructions de paiement</h2>
+    <form id="f-pset" novalidate>
+      <label><span>Instructions Wise (affichées au client)</span><textarea name="wise" maxlength="2000"></textarea></label>
+      <div class="row row2">
+        <label><span>Numéro MonCash</span><input name="moncash" maxlength="30"></label>
+        <label><span>Numéro NatCash</span><input name="natcash" maxlength="30"></label>
+      </div>
+      <p><button class="btn" type="submit">Enregistrer</button></p><p class="note" id="s-note" role="status"></p>
+    </form>
+  </section>
+</main>
+
+<dialog id="p-dialog" aria-labelledby="d-title">
+  <h2 id="d-title">Paiement</h2>
+  <dl id="d-list"></dl>
+  <p><button class="btn" id="proof-btn" type="button" hidden>Charger la preuve</button> <a id="proof-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Ouvrir la preuve (60 s)</a></p>
+  <div id="review" hidden>
+    <label><span>Note (obligatoire pour rejeter)</span><input id="r-note" maxlength="500"></label>
+    <div class="actions"><button class="btn" id="r-ok" type="button">Approuver</button><button class="btn" id="r-no" type="button">Rejeter</button></div>
+  </div>
+  <p class="error" id="r-msg" role="alert"></p>
+  <p><button class="btn" id="d-close" type="button">Fermer</button></p>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/admin-payments.js"></script>
+</body>
+</html>
