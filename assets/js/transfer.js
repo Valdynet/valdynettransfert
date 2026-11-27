@@ -43,10 +43,8 @@
       });
       const d = await res.json();
       if (!d.ok) return say(ERR[d.error] || "Création impossible. Réessayez.", false);
-      $("ref").textContent = d.reference;
-      f.hidden = true;
-      $("done").hidden = false;
       idem = crypto.randomUUID();
+      location.assign("/customer/pay.html?ref=" + encodeURIComponent(d.reference)); // next step: pay
     } catch {
       say("Erreur réseau. Réessayez.", false);
     } finally {
