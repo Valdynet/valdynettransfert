@@ -1,0 +1,3 @@
+textarea{width:100%;min-height:110px;padding:11px 12px;border:1px solid #8795A6;border-radius:6px;font:inherit;color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.pset{margin-top:32px}
