@@ -21,7 +21,16 @@
   const money = (n, c) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: c }).format(n);
   const mkp = (t) => { const p = document.createElement("p"); p.textContent = t; return p; };
   const fail = (t) => { $("pay-err").textContent = t; $("pay-err").hidden = false; };
-  const done = (t) => { $("paypal-box").hidden = true; $("f-manual").hidden = true; $("pay-err").hidden = true; $("p-status").textContent = t; $("p-status").hidden = false; };
+  // Optional WhatsApp contact, offered only after a PayPal payment or a submitted manual payment. Carries only the reference.
+  async function whatsapp() {
+    const c = await fetch("/api/config").then((r) => r.json()).catch(() => ({}));
+    if (!/^\d{8,15}$/.test(c.whatsappNumber || "")) return;
+    const a = document.createElement("a");
+    a.href = "https://wa.me/" + c.whatsappNumber + "?text=" + encodeURIComponent("Bonjour, je vous écris au sujet de ma transaction " + ref + ".");
+    a.textContent = "Nous contacter sur WhatsApp"; a.target = "_blank"; a.rel = "noopener noreferrer"; a.className = "btn";
+    $("p-status").after(a);
+  }
+  const done = (t) => { whatsapp(); $("paypal-box").hidden = true; $("f-manual").hidden = true; $("pay-err").hidden = true; $("p-status").textContent = t; $("p-status").hidden = false; };
 
   async function post(url, body) {
     const { data: { session } } = await sb.auth.getSession();
