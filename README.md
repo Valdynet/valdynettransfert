@@ -3,7 +3,7 @@
 Plateforme de transfert d’argent (USD ↔ HTG) de **Valdynet Freelancer LLC**.
 Stack : HTML/CSS/JavaScript vanilla, Netlify + Netlify Functions, Supabase (PostgreSQL, Auth, RLS), PayPal REST API.
 
-> **État : Phase 5 sur 6. Ce projet n’est pas prêt pour la production.**
+> **État : Phase 6 sur 6. Ce projet n’est pas prêt pour la production.**
 > Les migrations SQL, l’authentification et le tableau de bord client sont écrits mais **non testés** ; aucun paiement n’est actif.
 
 ## Avancement
@@ -15,7 +15,7 @@ Stack : HTML/CSS/JavaScript vanilla, Netlify + Netlify Functions, Supabase (Post
 | 3 | Création de transaction, historique, suivi public | Livré (calculateur testé ; reste non testé) |
 | 4 | Tableau de bord admin, paramètres financiers, journaux d’audit | Livré (non testé) |
 | 5 | PayPal Sandbox, flux manuels Wise / MonCash / NatCash, paiements admin | Livré, **non vérifié** (voir « Phase 5 » ci-dessous) |
-| 6 | E-mails, WhatsApp, tests de sécurité, guide de déploiement | À faire |
+| 6 | E-mails, WhatsApp, tests de sécurité, guide de déploiement | Livré, **non vérifié en conditions réelles** (voir `docs/DEPLOYMENT.md`) |
 
 ## Structure actuelle
 
@@ -26,7 +26,7 @@ valdynet-transfert/
 ├── customer/dashboard.html         Tableau de bord client (protégé)
 ├── track.html                      Suivi public
 ├── customer/new-transfer.html      Nouveau transfert
-├── database/migrations/            001_schema.sql … 005_payments.sql
+├── database/migrations/            001_schema.sql … 006_notifications.sql
 ├── package.json                    Dépendance des fonctions (@supabase/supabase-js)
 ├── assets/css/style.css
 ├── assets/js/calculator.js         Affichage uniquement, appelle /api/calculate
@@ -104,7 +104,7 @@ Limites actuelles : la page admin n’existe pas encore (Phase 4), les transacti
 - Chaque approbation, rejet et changement d’instructions est écrit dans `audit_logs`.
 
 ### Tests
-`node --test tests/finance.test.js tests/payments.test.js tests/payment-handlers.test.js` : 33 tests automatiques (calculateur, validation PayPal, signature webhook, double capture, paiement échoué/en attente, doublon webhook, références manuelles, autorisation admin, accès à la transaction d’un autre client). Ils utilisent une base et un PayPal simulés. **Ils ne remplacent pas** les essais réels ci-dessous.
+`node --test tests/*.test.js` : tests automatiques (calculateur, validation PayPal, signature webhook, double capture, paiement échoué/en attente, doublon webhook, références manuelles, autorisation admin, accès à la transaction d’un autre client). Ils utilisent une base et un PayPal simulés. **Ils ne remplacent pas** les essais réels ci-dessous.
 
 | À vérifier en vrai (Sandbox + Supabase) | Attendu |
 |---|---|
@@ -119,6 +119,13 @@ Limites actuelles : la page admin n’existe pas encore (Phase 4), les transacti
 | Client A ouvre `pay.html?ref=` du client B | « Transaction introuvable » |
 | Client appelle `/api/admin-payments` | HTTP 403 |
 | Lire `payment-proofs` avec la clé anon | Refusé |
+
+## Phase 6 : notifications, WhatsApp, vérifications
+
+- **E-mails de compte** (confirmation, réinitialisation) : Supabase Auth (SMTP personnalisé conseillé en production).
+- **E-mails de transaction** : chaque changement de statut crée une notification (client ; administrateurs pour un paiement manuel à vérifier) via un déclencheur SQL (`006_notifications.sql`). La fonction planifiée `send-notifications` les envoie toutes les 5 minutes. Fournisseur par défaut : aucun (rien n’est envoyé) ; l’adaptateur fourni est Resend (`EMAIL_PROVIDER=resend`, `EMAIL_API_KEY`, `EMAIL_FROM`), d’autres s’ajoutent dans `_lib/email.js`. Les notes internes des administrateurs ne sont jamais envoyées au client. Les textes sont en français, dans le déclencheur SQL.
+- **WhatsApp** : `WHATSAPP_NUMBER` ; le bouton n’apparaît qu’après un paiement PayPal ou l’envoi d’un paiement manuel, ne s’ouvre jamais automatiquement et ne transmet que la référence de transaction.
+- **Vérifications** : `node --test tests/*.test.js` (calculateur, paiements, API, contrôles de sécurité du code), `database/tests/rls_checks.sql` (isolation des clients, à exécuter dans Supabase), `node scripts/smoke.js URL` (site en ligne).
 
 ## Politique de calcul financier (par défaut)
 
@@ -158,7 +165,7 @@ Cochée = en place dans le code actuel. Non cochée = à faire.
 - [x] Suivi public : référence non devinable, limitation de débit, réponses génériques (écrit, à tester)
 - [x] Tables de journaux en ajout seul (déclencheurs) ; alimentation des journaux en Phases 3–4
 - [x] Preuves de paiement : bucket privé, types et taille limités, accès par lien signé de 60 s (écrit, à vérifier)
-- [ ] Tests de sécurité et de non-régression
+- [x] Tests de sécurité et de non-régression automatiques (code) ; `rls_checks.sql` et `smoke.js` à exécuter par vous
 
 Ne pas affirmer de conformité PCI DSS ni d’approbation réglementaire sans validation indépendante. Un service de transfert d’argent peut exiger enregistrement ou licence, ainsi que des procédures KYC/AML : à vérifier avec un professionnel avant d’augmenter les volumes.
 
