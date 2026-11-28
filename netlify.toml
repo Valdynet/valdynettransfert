@@ -5,6 +5,9 @@
 [functions]
   node_bundler = "esbuild"
 
+[functions."send-notifications"]
+  schedule = "*/5 * * * *"
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
@@ -18,4 +21,4 @@
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "DENY"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://*.paypal.com https://*.paypalobjects.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.paypal.com https://*.paypalobjects.com; connect-src 'self' https://*.supabase.co https://*.paypal.com; frame-src https://*.paypal.com; frame-ancestors 'none'"
