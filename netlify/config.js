@@ -10,6 +10,6 @@ exports.handler = async () => {
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
-    body: JSON.stringify({ supabaseUrl: url, supabaseAnonKey: key, paypalClientId: process.env.PAYPAL_CLIENT_ID || null }), // client id is public by design; the secret never leaves the server
+    body: JSON.stringify({ supabaseUrl: url, supabaseAnonKey: key, paypalClientId: process.env.PAYPAL_CLIENT_ID || null, whatsappNumber: /^\d{8,15}$/.test(process.env.WHATSAPP_NUMBER || "") ? process.env.WHATSAPP_NUMBER : null }), // client id is public by design; the secret never leaves the server
   };
 };
